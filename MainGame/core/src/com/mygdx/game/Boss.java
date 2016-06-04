@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Vector;
@@ -63,10 +66,10 @@ public class Boss {
 
         boss.dir = LEFT;
 
-        //boss.sprite.setTextureRect(IntRect(11, 13, 106, 154));
+        //boss.sprite.setRegion(11, 13, 106, 154));
         boss.sprite.setPosition(14 * 64, 5 * 64);
 
-        boss.sprite.setTextureRect(IntRect(11, 189, 106, 154));
+        boss.sprite.setRegion(11, 189, 106, 154);
 
         boss.lastSide = LEFT;
         boss.followForShootTime = 0;
@@ -98,11 +101,11 @@ public class Boss {
             }
             if (boss.lastSide == LEFT)
             {
-                boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame), 13, 106, 154));
+                boss.sprite.setRegion(11 + 105 * (int)boss.currentFrame, 13, 106, 154);
             }
             else
             {
-                boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame), 189, 106, 154));
+                boss.sprite.setRegion(11 + 105 * (int)boss.currentFrame, 189, 106, 154);
             }
             boss.currentFrame += 0.1f;
         }
@@ -113,18 +116,18 @@ public class Boss {
                 case UP: case DOWN:
                 if (boss.lastSide == LEFT)
                 {
-                    boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame, 13, 106, 154));
+                    boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 13, 106, 154);
                 }
                 else
                 {
-                    boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame, 189, 106, 154));
+                    boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 189, 106, 154);
                 }
                 break;
                 case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame, 189, 106, 154));
+                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 189, 106, 154);
                 break;
                 case DOWNLEFT: case LEFT: case UPLEFT:
-                boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame, 13, 106, 154));
+                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 13, 106, 154);
                 break;
                 default:
                     break;
@@ -143,11 +146,11 @@ public class Boss {
         {
             if (boss.lastSide == LEFT)
             {
-                boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame, 383, 106, 154));
+                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 383, 106, 154);
             }
             else
             {
-                boss.sprite.setTextureRect(IntRect(11 + 105 * (int)boss.currentFrame, 572, 106, 154));
+                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 572, 106, 154));
             }
             if (boss.currentFrame > 2 && boss.isAttack == false)
             {
@@ -186,7 +189,7 @@ public class Boss {
         return false;
     }
 
-    void ComputeBossDirection(Boss boss, FloatRect rect, Sprite hero)
+    void ComputeBossDirection(Boss boss, TextureRegion rect, Sprite hero)
     {
         Vector2 heroPos = GetSpriteCenter(hero);
         //Vector2f bossPos = { rect.left + rect.width / 2.f, rect.top + rect.height / 2.f };
@@ -255,10 +258,10 @@ public class Boss {
         }
     }
 
-    FloatRect GetBossCollisionRect(Sprite sprite)
+    TextureRegion GetBossCollisionRect(Sprite sprite)
     {
-        FloatRect bounds = sprite.getGlobalBounds();
-        return FloatRect(bounds.left, bounds.top + 50.f, bounds.width, bounds.height - 50.f);
+        TextureRegion bounds = sprite.getGlobalBounds();
+        return TextureRegion(bounds.left, bounds.top + 50.f, bounds.width, bounds.height - 50.f);
     }
 
     boolean IsReachedHero(Sprite hero, Sprite boss)
@@ -274,7 +277,7 @@ public class Boss {
         return false;
     }
 
-    boolean IsFootRectIntersectWithHero(Sprite hero, FloatRect boss)
+    boolean IsFootRectIntersectWithHero(Sprite hero, TextureRegion boss)
     {
         if (hero.getGlobalBounds().intersects(boss))
             return true;
@@ -329,15 +332,15 @@ public class Boss {
     {
         if (boss.health > 0)
         {
-            boss.indicator.setTextureRect(IntRect(0, 0, 246 * (int)((float)(boss.health) / (float)BOSS_MAX_HEALTH), 8));
+            boss.indicator.setRegion(0, 0, 246 * (int) ((float) (boss.health) / (float) BOSS_MAX_HEALTH), 8);
         }
         boss.bar.setPosition(BOSS_BAR_POSITION.x + viewPos.x - WINDOW_SIZE.x / 2.f, BOSS_BAR_POSITION.y + viewPos.y - WINDOW_SIZE.y / 2.f);
         boss.indicator.setPosition(BOSS_INDICATOR_POSITION.x + viewPos.x - WINDOW_SIZE.x / 2.f, BOSS_INDICATOR_POSITION.y + viewPos.y - WINDOW_SIZE.y / 2.f);
-        batch.draw(boss.bar);
-        batch.draw(boss.indicator);
+        boss.bar.draw(batch);
+        boss.indicator.draw(batch);
     }
 
     void DrawBoss(SpriteBatch batch, Sprite boss) {
-        batch.draw(boss);
+        boss.draw(batch);
     }
 }

@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -33,7 +35,7 @@ public class Loot {
         for (Loot item : lootList)
         {
             if (item.isDrawn == true)
-                batch.draw(item.sprite);
+                .draw(batch)(item.sprite);
         }
     };
 
@@ -58,13 +60,13 @@ public class Loot {
         loot.quantity = GetMaxQuantity(loot.name);
         loot.pos = new Vector2(x,y);
         loot.sprite = sprite;
-        loot.sprite.setPosition(loot.pos);
-        loot.sprite.setTextureRect(sf::IntRect(item.ordinal() * 32, 0, 32, 32));
+        loot.sprite.setPosition(loot.pos.x, loot.pos.y);
+        loot.sprite.setRegion(item.ordinal() * 32, 0, 32, 32);
         loot.isDrawn = true;
         return loot;
     }
 
-    void GenerateLoot(Vector<Loot> lootList, Vector<Object> objects, Vector2 mapSize, int ItemsRemaining, NameItem  item, Sprite texture_items)
+    void GenerateLoot(Vector<Loot> lootList, Vector<Object> objects, Vector2 mapSize, int ItemsRemaining, Constants.NameItem  item, Sprite texture_items)
     {
         //TODO: MAKE FUNCTION MORE READABLE
         do

@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -78,28 +80,28 @@ public class Npc {
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(2 + 41 * (int)npc.currentFrame, 350, 41, 50));
+                        npc.sprite.setRegion(2 + 41 * (int) npc.currentFrame, 350, 41, 50);
                         break;
                     case BABY:
                         if (npc.currentFrame > 7)
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(4 + 28 * (int)npc.currentFrame, 213, 23, 32));
+                        npc.sprite.setRegion(4 + 28 * (int) npc.currentFrame, 213, 23, 32);
                         break;
                     case TEACHER:
                         if (npc.currentFrame > 2)
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(3 + 37 * (int)npc.currentFrame, 2, 37, 41));
+                        npc.sprite.setRegion(3 + 37 * (int) npc.currentFrame, 2, 37, 41);
                         break;
                     case GIRL:
                         if (npc.currentFrame > 7)
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(0 + 50 * (int)npc.currentFrame, 92, 50, 67));
+                        npc.sprite.setRegion(0 + 50 * (int) npc.currentFrame, 92, 50, 67);
                         npc.currentFrame += 0.08f;
                         break;
                     case DOG:
@@ -107,34 +109,34 @@ public class Npc {
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(2 + 34 * (int)npc.currentFrame, 49, 31, 34));
+                        npc.sprite.setRegion(2 + 34 * (int) npc.currentFrame, 49, 31, 34);
                         break;
                     case SOLDIER:
                         if (npc.currentFrame > 3)
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(4 + 36 * (int)npc.currentFrame, 252, 35, 46));
+                        npc.sprite.setRegion(4 + 36 * (int) npc.currentFrame, 252, 35, 46);
                         break;
                     case SEARCHER:
                         if (npc.currentFrame > 3)
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(4 + 31 * (int)npc.currentFrame, 306, 29, 39));
+                        npc.sprite.setRegion(4 + 31 * (int) npc.currentFrame, 306, 29, 39);
                         break;
                     case COOK:
                         if (npc.currentFrame > 9)
                         {
                             npc.currentFrame = 0;
                         }
-                        npc.sprite.setTextureRect(IntRect(3 + 54 * (int)npc.currentFrame, 454, 52, 66));
+                        npc.sprite.setRegion(3 + 54 * (int) npc.currentFrame, 454, 52, 66);
                         break;
                 }
             }
             else if (npc.state == KILLED)
             {
-                npc.sprite.setTextureRect(IntRect(4 + 45 * (int)npc.currentFrame, 593, 53, 45));
+                npc.sprite.setRegion(4 + 45 * (int) npc.currentFrame, 593, 53, 45);
                 npc.currentFrame += 0.06f;
             }
             npc.currentFrame += 0.02f;
@@ -156,7 +158,7 @@ public class Npc {
     {
         for (Npc npc : npcList)
         {
-            batch.draw(npc.sprite);
+            npc.sprite.draw(batch);
         }
     };
 

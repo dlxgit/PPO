@@ -52,7 +52,7 @@ public class Hero {
         health = 100;
         Texture.loadFromFile("resources/images/png");
         sprite.setTexture(texture);
-        //sprite.setTextureRect(IntRect(4, 4, 32, 32));
+        //sprite.setRegion(4, 4, 32, 32));
         dir = NONE;
         dirLast = DOWN;
         currentFrame = 0;
@@ -134,7 +134,7 @@ public class Hero {
     {
         if (state == TRANSFORMING)
         {
-            sprite.setTextureRect(IntRect(11 + 37 * (int)currentFrame, 484, 32, 45));
+            sprite.setRegion(11 + 37 * (int)currentFrame, 484, 32, 45);
             currentFrame += 0.05f;
 
             if (currentFrame > 7)
@@ -152,16 +152,16 @@ public class Hero {
                 switch (dirLast)
                 {
                     case UP:
-                        sprite.setTextureRect(IntRect(355 + 40 * (int)currentFrame, 597, 34, 47));
+                        sprite.setRegion(355 + 40 * (int)currentFrame, 597, 34, 47);
                         break;
                     case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                    sprite.setTextureRect(IntRect(182 + 57 * (int)currentFrame, 598, 48, 52));
+                    sprite.setRegion(182 + 57 * (int)currentFrame, 598, 48, 52);
                     break;
                     case DOWN:
-                        sprite.setTextureRect(IntRect(42 + 35 * (int)currentFrame, 595, 35, 54));
+                        sprite.setRegion(42 + 35 * (int)currentFrame, 595, 35, 54);
                         break;
                     case DOWNLEFT: case LEFT: case UPLEFT:
-                    sprite.setTextureRect(IntRect(492 + 56 * (int)currentFrame, 601, 54, 52));
+                    sprite.setRegion(492 + 56 * (int)currentFrame, 601, 54, 52);
                     break;
                     case NONE:
                         break;
@@ -179,34 +179,34 @@ public class Hero {
                 switch (dir)
                 {
                     case UP:
-                        sprite.setTextureRect(IntRect(326 + 40 * (int)currentFrame, 537, 37, 47));
+                        sprite.setRegion(326 + 40 * (int)currentFrame, 537, 37, 47);
                         break;
                     case UPRIGHT: case RIGHT: case DOWNRIGHT:
                     //21 38
-                    sprite.setTextureRect(IntRect(163 + 40 * (int)currentFrame, 537, 37, 47));
+                    sprite.setRegion(163 + 40 * (int)currentFrame, 537, 37, 47);
                     break;
                     case DOWN:
-                        sprite.setTextureRect(IntRect(9 + 38 * (int)currentFrame, 537, 37, 47));
+                        sprite.setRegion(9 + 38 * (int)currentFrame, 537, 37, 47);
                         break;
                     case DOWNLEFT: case LEFT: case UPLEFT:
-                    sprite.setTextureRect(IntRect(480 + 40 * (int)currentFrame, 537, 37, 47));
+                    sprite.setRegion(480 + 40 * (int)currentFrame, 537, 37, 47);
                     break;
                     case NONE:
                         if (dirLast == UP)
                         {
-                            sprite.setTextureRect(IntRect(270 + 76, 485, 36, 46));
+                            sprite.setRegion(270 + 76, 485, 36, 46);
                         }
                         else if (dirLast == RIGHT)
                         {
-                            sprite.setTextureRect(IntRect(270 + 39, 485, 36, 46));
+                            sprite.setRegion(270 + 39, 485, 36, 46);
                         }
                         else if (dirLast == DOWN)
                         {
-                            sprite.setTextureRect(IntRect(270, 485, 36, 46));
+                            sprite.setRegion(270, 485, 36, 46);
                         }
                         else if (dirLast == LEFT)
                         {
-                            sprite.setTextureRect(IntRect(270 + 114, 485, 36, 46));
+                            sprite.setRegion(270 + 114, 485, 36, 46);
                         }
                         break;
                 }
@@ -224,34 +224,34 @@ public class Hero {
             switch (dir)
             {
                 case UP:
-                    sprite.setTextureRect(IntRect(105 + 22 * (int)currentFrame, 84, 21, 37));
+                    sprite.setRegion(105 + 22 * (int)currentFrame, 84, 21, 37);
                     break;
                 case UPRIGHT: case RIGHT: case DOWNRIGHT:
                 //21 38
-                sprite.setTextureRect(IntRect(105 + 22 * (int)currentFrame, 44, 21, 37));
+                sprite.setRegion(105 + 22 * (int)currentFrame, 44, 21, 37);
                 break;
                 case DOWN:
-                    sprite.setTextureRect(IntRect(105 + 22 * (int)currentFrame, 4, 21, 37));
+                    sprite.setRegion(105 + 22 * (int)currentFrame, 4, 21, 37);
                     break;
                 case DOWNLEFT: case LEFT: case UPLEFT:
-                sprite.setTextureRect(IntRect(105 + 22 * (int)currentFrame, 124, 21, 37));
+                sprite.setRegion(105 + 22 * (int)currentFrame, 124, 21, 37);
                 break;
                 case NONE:
                     if (dirLast == UP)
                     {
-                        sprite.setTextureRect(IntRect(86, 85, 21, 36));
+                        sprite.setRegion(86, 85, 21, 36));
                     }
                     else if (dirLast == RIGHT)
                     {
-                        sprite.setTextureRect(IntRect(86, 45, 21, 36));
+                        sprite.setRegion(86, 45, 21, 36));
                     }
                     else if (dirLast == DOWN)
                     {
-                        sprite.setTextureRect(IntRect(86, 5, 21, 36));
+                        sprite.setRegion(86, 5, 21, 36));
                     }
                     else if (dirLast == LEFT)
                     {
-                        sprite.setTextureRect(IntRect(86, 125, 21, 36));
+                        sprite.setRegion(86, 125, 21, 36));
                     }
                     break;
             }
@@ -264,7 +264,7 @@ public class Hero {
         }
         else if (state == DAMAGED)
         {
-            sprite.setTextureRect(IntRect(10 + 32 * (int)currentFrame, 179, 32, 45));
+            sprite.setRegion(10 + 32 * (int)currentFrame, 179, 32, 45));
             currentFrame += 0.06f;
             if (currentFrame > 2)
             {
@@ -274,7 +274,7 @@ public class Hero {
         }
         else if (state == SMASHED)
         {
-            sprite.setTextureRect(IntRect(235, 299, 70, 51));
+            sprite.setRegion(235, 299, 70, 51);
             currentFrame = 0;
             if (lastSmashTime + HERO_SMASH_DURATION < time)
             {
@@ -295,7 +295,7 @@ public class Hero {
     };
 
     void DrawHero(SpriteBatch batch, Sprite  hero){
-        batch.draw(hero);
+        .draw(batch)(hero);
     };
 
 

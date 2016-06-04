@@ -51,23 +51,23 @@ public class Game{
     void UpdateInventory()
     {
         //update items
-        if (inventoryList[hero.slotNo].current == 0 && time - hero.lastReloadTime > hero.WEAPON_RELOAD_TIME)
+        if (inventoryList.get(hero.slotNo).current == 0 && time - hero.lastReloadTime > hero.WEAPON_RELOAD_TIME)
         {
             hero.lastReloadTime = time;
             hero.isReloading = false;
-            if (inventoryList[hero.slotNo].quantity >= Constants.MAX_AMMO[inventoryList[hero.slotNo].name])
+            if (inventoryList.get(hero.slotNo).quantity >= Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name])
             {
-                inventoryList[hero.slotNo].quantity -= Constants.MAX_AMMO[inventoryList[hero.slotNo].name];
-                inventoryList[hero.slotNo].current = Constants.MAX_AMMO[inventoryList[hero.slotNo].name];
+                inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).quantity -= Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name];
+                inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).current = Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name];
             }
             else
             {
-                inventoryList[hero.slotNo].current = inventoryList[slotNo].quantity;
-                inventoryList[hero.slotNo].quantity = 0;
+                inventoryList.set(hero.slotNo,inventoryList.get(hero.slotNo)).current = inventoryList.get(hero.slotNo).quantity;
+                inventoryList.set(hero.slotNo,inventoryList.get(hero.slotNo)).quantity = 0;
             }
-            if (inventoryList[hero.slotNo].quantity <= 0)
+            if (inventoryList.get(hero.slotNo).quantity <= 0)
             {
-                inventoryList[hero.slotNo].quantity = 0;
+                inventoryList.get(hero.slotNo).quantity = 0;
             }
         }
     };
@@ -86,13 +86,13 @@ public class Game{
                     hero.currentFrame = 0;
                 }
             }
-            else if (state == NORMAL && inventoryList[slotNo].current > 0)
+            else if (state == NORMAL && inventoryList.get(hero.slotNo).current > 0)
             {
-                if (time > shotLastTime + ITEM_REUSE_COOLDOWN[inventoryList[slotNo].name])
+                if (time > shotLastTime + ITEM_REUSE_COOLDOWN[inventoryList.get(hero.slotNo).name])
                 {
                     shotLastTime = time;
                     inventoryList[slotNo].current -= 1;
-                    if (inventoryList[slotNo].name == PISTOL || inventoryList[slotNo].name == RIFLE)
+                    if (inventoryList.get(hero.slotNo).name == PISTOL || inventoryList.get(hero.slotNo).name == RIFLE)
                     {
                         if (Keyboard::isKeyPressed(Keyboard::A)) dirLast = LEFT;
                         if (Keyboard::isKeyPressed(Keyboard::S)) dirLast = DOWN;
@@ -101,7 +101,7 @@ public class Game{
                         hero.isSoundShoot = true;
                         AddNewShot(shotList, dirLast, pos, time, sprite_shot, sprite_grenade, BULLET);
                     }
-                    else if (inventoryList[slotNo].name == DRINK)
+                    else if (inventoryList.get(hero.slotNo).name == DRINK)
                     {
                         hero.health += HP_PER_DRINK;
                         if (health > 100)
@@ -109,7 +109,7 @@ public class Game{
                             health = 100;
                         }
                     }
-                    else if (inventoryList[slotNo].name == MIXTURE)
+                    else if (inventoryList.get(hero.slotNo).name == MIXTURE)
                     {
                         state = TRANSFORMING;
                         hero.dir = NONE;
@@ -136,16 +136,16 @@ public class Game{
         //std::ostringstream toStringQuantity;
 
 
-        text.setString(to_string(inventoryList[hero.slotNo].current) + "/" + to_string(inventoryList[hero.slotNo].quantity) + " " + ITEM_NAMES[inventoryList[hero.slotNo].name]);
-        batch.draw(text);
+        text.setString(to_string(inventoryList.get(hero.slotNo).current) + "/" + to_string(inventoryList.get(hero.slotNo).quantity) + " " + ITEM_NAMES[inventoryList.get(hero.slotNo).name]);
+        .draw(batch)(text);
         if (hero.isReloading)
         {
             text.setPosition(posView.x + 40, posView.y + 70);
-            if (inventoryList[hero.slotNo].name == PISTOL || inventoryList[hero.slotNo].name == RIFLE)
+            if (inventoryList.get(hero.slotNo).name == PISTOL || inventoryList.get(hero.slotNo).name == RIFLE)
             {
                 text.setString("reloading");
             }
-            else if (inventoryList[hero.slotNo].name == GRENADE)
+            else if (inventoryList.get(hero.slotNo).name == GRENADE)
             {
                 //text.setString("pulling");
             }
@@ -153,25 +153,25 @@ public class Game{
             {
                 //text.setString("opening");
             }
-            batch.draw(text);
+            text.draw(batch);
         }
 
         if (maxNeighbors > 0)
         {
             text.setString("rescued: " + to_string(savedNeighbors));
             text.setPosition(posView.x + 5, posView.y + 100);
-            batch.draw(text);
+            text.draw(batch);
 
             int remaining = MAX_NUMBER_OF_NEIGHBORS - savedNeighbors;
             text.setString("remaining: " + to_string(remaining));
             text.setPosition(posView.x + 5, posView.y + 120);
-            batch.draw(text);
+            text.draw(batch);
         }
         else
         {
             text.setString("Kill Boss");
             text.setPosition(posView.x + 5, posView.y + 120);
-            batch.draw(text);
+            text.draw(batch);
         }
     }
 
@@ -182,15 +182,15 @@ public class Game{
         inventory.quantity = loot.quantity;
         inventory.current = 0;
         inventory.sprite = items;
-        inventory.sprite.setTextureRect(sf::IntRect(loot.name * 32, 0, 32, 32));
+        inventory.sprite.setRegion(loot.name.ordinal() * 32, 0, 32, 32));
         return inventory;
     }
 
 
     void CheckLoot(Sprite items)
     {
-        float x = sprite.getPosition().x;
-        float y = sprite.getPosition().y;
+        float x = hero.sprite.getX();
+        float y = hero.sprite.getPosition().y;
 
         boolean isItemAlreadyIn = false;
 
@@ -201,7 +201,7 @@ public class Game{
                 Vector2 itemCenter = new Vector2();
                 itemCenter.x = lootItem.pos.x + lootItem.sprite.getGlobalBounds().width / 2;
                 itemCenter.y = lootItem.pos.y + lootItem.sprite.getGlobalBounds().height / 2;
-                if (sprite.getGlobalBounds().contains(itemCenter))
+                if (hero.sprite.getGlobalBounds().contains(itemCenter))
                 {
                     hero.isSoundLoot = true;
                     if (lootItem.name != AMMO)  //any item that we can take
@@ -210,7 +210,7 @@ public class Game{
                         int itemIndex = GetSlotIndexOfItem(lootItem, inventoryList);
                         if (itemIndex >= 0)
                         {
-                            inventoryList[itemIndex].quantity += lootItem.quantity;
+                            inventoryList.set(itemIndex, inventoryList.get(itemIndex)).quantity += lootItem.quantity;
                             lootItem.isDrawn = false;
                             isItemAlreadyIn = true;
                         }

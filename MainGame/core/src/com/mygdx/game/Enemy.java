@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Iterator;
@@ -129,7 +132,7 @@ public class Enemy {
         {
             enemy.state = NOTSPAWNED;
             enemy.sprite = sprites.zombie;
-            enemy.sprite.setTextureRect(IntRect(5, 5, 30, 30));
+            enemy.sprite.setRegion(5, 5, 30, 30);
             enemy.spawnDelay = 0;
 
         }
@@ -137,7 +140,7 @@ public class Enemy {
         {
             enemy.state = NOTSPAWNED;
             enemy.sprite = sprites.axe_enemy;
-            enemy.sprite.setTextureRect(IntRect(29, 42, 22, 31));
+            enemy.sprite.setRegion(29, 42, 22, 31));
             enemy.spawnDelay = ENEMY_AXE_SPAWN_DELAY;
             enemy.attackCooldown = ENEMY_AXE_ATTACK_COOLDOWN;
         }
@@ -168,7 +171,6 @@ public class Enemy {
                     npc.state = KILLED;
                 }
             }
-            npc++;
         }
     };
 
@@ -331,7 +333,7 @@ public class Enemy {
         {
             if (enemy.state == DEAD)  //if zombie is exploding
             {
-                enemy.sprite.setTextureRect(IntRect(5 + 40 * (int)enemy.currentFrame, 344, 34, 48));
+                enemy.sprite.setRegion(5 + 40 * (int)enemy.currentFrame, 344, 34, 48));
                 enemy.currentFrame += 0.05f;
                 if (enemy.currentFrame > 9)
                 {
@@ -340,7 +342,7 @@ public class Enemy {
             }
             if (enemy.state == NOTSPAWNED)  //if zombie is not spawned yet
             {
-                enemy.sprite.setTextureRect(IntRect(15 + 50 * (int)enemy.currentFrame, 12, 33, 51));
+                enemy.sprite.setRegion(15 + 50 * (int)enemy.currentFrame, 12, 33, 51));
 
                 if (enemy.currentFrame > 5)
                 {
@@ -361,28 +363,28 @@ public class Enemy {
                     switch (enemy.dir)
                     {
                         case UP:
-                            enemy.sprite.setTextureRect(IntRect(15 + 36 * (int)enemy.currentFrame, 84 + 59 + 59, 27, 49));
+                            enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84 + 59 + 59, 27, 49));
                             if (enemy.currentFrame > 4)
                             {
                                 enemy.currentFrame = 0;
                             }
                             break;
                         case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                        enemy.sprite.setTextureRect(IntRect(15 + 36 * (int)enemy.currentFrame, 84 + 59 * 3, 27, 49));
+                        enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84 + 59 * 3, 27, 49));
                         if (enemy.currentFrame > 2)
                         {
                             enemy.currentFrame = 0;
                         }
                         break;
                         case DOWN:
-                            enemy.sprite.setTextureRect(IntRect(15 + 36 * (int)enemy.currentFrame, 84, 27, 49));
+                            enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84, 27, 49));
                             if (enemy.currentFrame > 2)
                             {
                                 enemy.currentFrame = 0;
                             }
                             break;
                         case DOWNLEFT: case LEFT: case UPLEFT:
-                        enemy.sprite.setTextureRect(IntRect(15 + 36 * (int)enemy.currentFrame, 84 + 59, 27, 49));
+                        enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84 + 59, 27, 49));
                         if (enemy.currentFrame > 2)
                         {
                             enemy.currentFrame = 0;
@@ -390,7 +392,7 @@ public class Enemy {
                         break;
                         case NONE:
                             //no need??
-                            enemy.sprite.setTextureRect(IntRect(190, 84, 27, 48));
+                            enemy.sprite.setRegion(190, 84, 27, 48));
                             if (enemy.currentFrame > 4)
                             {
                                 enemy.currentFrame = 0;
@@ -440,28 +442,28 @@ public class Enemy {
                         switch (enemy.dir)
                         {
                             case UP:
-                                enemy.sprite.setTextureRect(IntRect(10 + 22 * (int)enemy.currentFrame, 7, 21, 31));
+                                enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 7, 21, 31));
                                 if (enemy.currentFrame > 4)
                                 {
                                     enemy.currentFrame = 0;
                                 }
                                 break;
                             case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                            enemy.sprite.setTextureRect(IntRect(10 + 22 * (int)enemy.currentFrame, 118, 21, 31));
+                            enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 118, 21, 31));
                             if (enemy.currentFrame > 2)
                             {
                                 enemy.currentFrame = 0;
                             }
                             break;
                             case DOWN:
-                                enemy.sprite.setTextureRect(IntRect(10 + 22 * (int)enemy.currentFrame, 43, 21, 31));
+                                enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 43, 21, 31));
                                 if (enemy.currentFrame > 2)
                                 {
                                     enemy.currentFrame = 0;
                                 }
                                 break;
                             case DOWNLEFT: case LEFT: case UPLEFT:
-                            enemy.sprite.setTextureRect(IntRect(10 + 22 * (int)enemy.currentFrame, 80, 21, 31));
+                            enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 80, 21, 31));
                             if (enemy.currentFrame > 2)
                             {
                                 enemy.currentFrame = 0;
@@ -469,7 +471,7 @@ public class Enemy {
                             break;
                             case NONE:
                                 //no need??
-                                enemy.sprite.setTextureRect(IntRect(190, 84, 27, 48));
+                                enemy.sprite.setRegion(190, 84, 27, 48));
                                 if (enemy.currentFrame > 4)
                                 {
                                     enemy.currentFrame = 0;
@@ -480,7 +482,7 @@ public class Enemy {
                 }
                 else if (enemy.state == DEAD)
                 {
-                    enemy.sprite.setTextureRect(IntRect(5 + 29 * (int)enemy.currentFrame,232, 30, 38));
+                    enemy.sprite.setRegion(5 + 29 * (int)enemy.currentFrame,232, 30, 38));
                     enemy.currentFrame += 0.03f;
                     if (enemy.currentFrame > 9)
                     {
@@ -505,28 +507,28 @@ public class Enemy {
         switch (enemy.dirLast)
         {
             case UP:
-                enemy.sprite.setTextureRect(IntRect(34, 174, 28, 27));
+                enemy.sprite.setRegion(34, 174, 28, 27));
                 if (enemy.currentFrame > 4)
                 {
                     enemy.currentFrame = 0;
                 }
                 break;
             case UPRIGHT: case RIGHT: case DOWNRIGHT:
-            enemy.sprite.setTextureRect(IntRect(62, 173, 28, 27));
+            enemy.sprite.setRegion(62, 173, 28, 27));
             if (enemy.currentFrame > 2)
             {
                 enemy.currentFrame = 0;
             }
             break;
             case DOWN:
-                enemy.sprite.setTextureRect(IntRect(89, 173, 28, 27));
+                enemy.sprite.setRegion(89, 173, 28, 27));
                 if (enemy.currentFrame > 2)
                 {
                     enemy.currentFrame = 0;
                 }
                 break;
             case DOWNLEFT: case LEFT: case UPLEFT:
-            enemy.sprite.setTextureRect(IntRect(5, 173, 28, 27));
+            enemy.sprite.setRegion(5, 173, 28, 27));
             if (enemy.currentFrame > 2)
             {
                 enemy.currentFrame = 0;
@@ -623,7 +625,7 @@ public class Enemy {
 
             Vector2 newPos = { float((rand() % WIDTH_MAP) * STEP), float((rand() % HEIGHT_MAP) * STEP) };
 
-            FloatRect lootRect = { newPos.x,newPos.y,ZOMBIE_SPAWN_RADIUS_COLLISION, ZOMBIE_SPAWN_RADIUS_COLLISION };
+            TextureRegion lootRect = { newPos.x,newPos.y,ZOMBIE_SPAWN_RADIUS_COLLISION, ZOMBIE_SPAWN_RADIUS_COLLISION };
             for (size_t i = 0; i < objects.size(); ++i)
             {
                 if (lootRect.intersects(objects[i].rect))
@@ -653,7 +655,7 @@ public class Enemy {
                         Constants.EnemyType type = COMMON;
                         if (!zombieList.isEmpty())
                         {
-                            if (zombieList[zombieList.size() - 1].type == AXE)
+                            if (zombieList.get(zombieList.size() - 1).type == AXE)
                                 type = COMMON;
                             else type = AXE;
                         }
@@ -707,7 +709,7 @@ public class Enemy {
     {
         for (Enemy  enemy : zombieList)
         {
-            batch.draw(enemy.sprite);
+            enemy.sprite.draw(batch);
         }
     };
 

@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -31,7 +33,7 @@ public class Throwing {
     {
         if (throwing.name != "milk")
         {
-            throwing.sprite.setTextureRect(IntRect(0 + 15 * (int)throwing.currentFrame, 0, 16, 16));
+            throwing.sprite.setRegion(0 + 15 * (int) throwing.currentFrame, 0, 16, 16);
             throwing.currentFrame += 0.6f;
             if (throwing.currentFrame > 4)
             {
@@ -60,7 +62,7 @@ public class Throwing {
     {
         for (Throwing throwing : throwingList)
         {
-            batch.draw(throwing.sprite);
+            sprite.draw(batch);
         }
     }
 

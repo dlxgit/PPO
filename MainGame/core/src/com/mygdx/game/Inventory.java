@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 import java.util.Vector;
 
 /**
@@ -20,7 +23,7 @@ public class Inventory {
         bool isExploded;
     };
     */
-    int GetMaxQuantity(NameItem name)
+    int GetMaxQuantity(Constants.NameItem name)
     {
         switch (name)
         {
@@ -51,7 +54,7 @@ public class Inventory {
         inventory.current = 0;
         inventory.quantity = 7;
         inventory.sprite = gameSprites.items;
-        inventory.sprite.setTextureRect(IntRect(32, 0, 32, 32));
+        inventory.sprite.setRegion(32, 0, 32, 32);
         inventoryList.add(inventory);
     }
 
