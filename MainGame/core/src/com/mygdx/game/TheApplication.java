@@ -36,6 +36,8 @@ public class TheApplication extends ApplicationAdapter{
 		img = new Texture("badlogic.jpg");
 		camera = new OrthographicCamera();
 		viewport = new FitViewport(800 / PPM, 480 / PPM, camera);
+		game = new Game();
+
 	}
 
 	@Override

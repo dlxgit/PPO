@@ -20,49 +20,49 @@ public class Npc {
     Constants.NpcType type;
     void InitializeNpc(Vector<Npc> npcList, Sprite sprite_npc)
     {
-        Npc npc;
+        Npc npc = new Npc();
         npc.currentFrame = 0;
         npc.health = 20;
         npc.sprite = sprite_npc;
-        npc.state = LIVING;
+        npc.state = Constants.NpcState.LIVING;
 
-        npc.type = PHOTOGRAPHS;
-        npc.pos = { 5 * STEP, 8 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.PHOTOGRAPHS;
+        npc.pos = new Vector2( 5 * Constants.STEP, 8 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
 
-        npc.type = BABY;
-        npc.pos = { 50 * STEP, 10 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.BABY;
+        npc.pos = new Vector2( 50 * Constants.STEP, 10 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
 
-        npc.type = TEACHER;
-        npc.pos = { 9 * STEP, 15 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.TEACHER;
+        npc.pos = new Vector2( 9 * Constants.STEP, 15 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
 
-        npc.type = DOG;
-        npc.pos = { 53 * STEP, 15 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.DOG;
+        npc.pos = new Vector2( 53 * Constants.STEP, 15 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
 
-        npc.type = SOLDIER;
-        npc.pos = { 28 * STEP, 23 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.SOLDIER;
+        npc.pos = new Vector2( 28 * Constants.STEP, 23 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
 
-        npc.type = SEARCHER;
-        npc.pos = { 55 * STEP, 4 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.SEARCHER;
+        npc.pos = new Vector2( 55 * Constants.STEP, 4 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
 
-        npc.type = COOK;
-        npc.pos = { 20 * STEP, 14 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.COOK;
+        npc.pos = new Vector2( 20 * Constants.STEP, 14 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
-        npc.type = GIRL;
-        npc.pos = { 15 * STEP, 6 * STEP };
-        npc.sprite.setPosition(npc.pos);
+        npc.type = Constants.NpcType.GIRL;
+        npc.pos = new Vector2( 15 * Constants.STEP, 6 * Constants.STEP );
+        npc.sprite.setPosition(npc.pos.x, npc.pos.y);
         npcList.add(npc);
     };
 
@@ -71,7 +71,7 @@ public class Npc {
     {
         for (Npc npc : npcList)
         {
-            if (npc.state == LIVING)
+            if (npc.state == Constants.NpcState.LIVING)
             {
                 switch (npc.type)
                 {
@@ -134,7 +134,7 @@ public class Npc {
                         break;
                 }
             }
-            else if (npc.state == KILLED)
+            else if (npc.state == Constants.NpcState.KILLED)
             {
                 npc.sprite.setRegion(4 + 45 * (int) npc.currentFrame, 593, 53, 45);
                 npc.currentFrame += 0.06f;
@@ -147,7 +147,7 @@ public class Npc {
     {
         for (Npc npc : npcList)
         {
-            if (npc.state != LIVING) {
+            if (npc.state != Constants.NpcState.LIVING) {
                 npcList.add(npc);
                 npcList.remove(npc);
             }

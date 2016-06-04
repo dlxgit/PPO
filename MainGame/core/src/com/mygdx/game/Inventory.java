@@ -44,13 +44,14 @@ public class Inventory {
             case SODA:
                 return 10;
         }
+        return 0;
     }
 
     void InitializeInventory(Vector<Inventory> inventoryList, Sprites gameSprites)
     {
-        Inventory inventory;
+        Inventory inventory = new Inventory();
 
-        inventory.name = PISTOL;
+        inventory.name = Constants.NameItem.PISTOL;
         inventory.current = 0;
         inventory.quantity = 7;
         inventory.sprite = gameSprites.items;

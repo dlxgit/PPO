@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -48,17 +51,85 @@ public class Game{
     int level;
     Boss boss;
 
+
+
+    public void AddNewShot(Constants.Direction dirLast, Sprite sprite_shot, Sprite sprite_grenade, Constants.ShotType shotType) //adding new shot in list
+    {
+        Shot shot = new Shot();
+        switch (dirLast)
+        {
+            case UP:
+                shot.dir = Constants.Direction.UP;
+                break;
+            case DOWN:
+                shot.dir = Constants.Direction.DOWN;
+                break;
+            case UPLEFT: case LEFT: case DOWNLEFT:
+            shot.dir = Constants.Direction.LEFT;
+            break;
+            case UPRIGHT: case RIGHT: case DOWNRIGHT:
+            shot.dir = Constants.Direction.RIGHT;
+            break;
+        }
+
+        Texture texture;
+
+        if (shotType == Constants.ShotType.BULLET)
+        {
+            //shot.pos = hero.sprite.getPosition();
+            shot.distance = 0;
+            shot.sprite = sprite_shot;
+            shot.type = shotType;
+            shot.sprite.setPosition(hero.sprite.getX(), hero.sprite.getY());
+            switch (shot.dir)
+            {
+                case UP:
+                    shot.sprite.setRegion(2, 5, 3, 7);
+                    break;
+                case RIGHT:
+                    shot.sprite.setRegion(0, 0, 7, 3);
+                    shot.sprite.setPosition(hero.sprite.getX(), hero.sprite.getY()  + 10.f);
+                    break;
+                case DOWN:
+                    shot.sprite.setRegion(10, 5, 3, 7);
+                    break;
+                case LEFT:
+                    shot.sprite.setRegion(8, 0, 7, 3);
+                    shot.sprite.setPosition(hero.sprite.getX(), hero.sprite.getY()+ 10.f);
+                    break;
+            }
+        }
+        else
+        {
+            //shot.pos = hero.sprite.getPosition();
+            shot.distance = 0;
+            shot.sprite = sprite_grenade;
+            shot.type = shotType;
+            shot.startTime = time;
+            Texture textureR;
+            //AddNewShot(hero, sprite_shot, game);
+            //shot.sprite.setPosition(hero.sprite.getPosition());
+            shot.currentFrame = 0;
+            shot.isExploded = false;
+            shot.sprite.setPosition(hero.sprite.getX(), hero.sprite.getY());
+        }
+        shot.pos = new Vector2(shot.sprite.getX(), shot.sprite.getY());
+
+        //cout << "SHOTEEEEEE " << pos.x << " " << pos.y  << endl;
+        shotList.add(shot);
+    };
+
     void UpdateInventory()
     {
         //update items
-        if (inventoryList.get(hero.slotNo).current == 0 && time - hero.lastReloadTime > hero.WEAPON_RELOAD_TIME)
+        if (inventoryList.get(hero.slotNo).current == 0 && time - hero.lastReloadTime > Constants.WEAPON_RELOAD_TIME)
         {
             hero.lastReloadTime = time;
             hero.isReloading = false;
-            if (inventoryList.get(hero.slotNo).quantity >= Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name])
+            if (inventoryList.get(hero.slotNo).quantity >= Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name.ordinal()])
             {
-                inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).quantity -= Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name];
-                inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).current = Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name];
+                inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).quantity -= Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name.ordinal()];
+                inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).current = Constants.MAX_AMMO[inventoryList.get(hero.slotNo).name.ordinal()];
             }
             else
             {
@@ -74,11 +145,11 @@ public class Game{
 
     void CheckUsingItems(Sprite sprite_shot, Sprite sprite_grenade)
     {
-        if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::D)|| Keyboard::isKeyPressed(Keyboard::W))
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)|| Gdx.input.isKeyPressed(Input.Keys.W))
         {
-            if (state == BEAST)
+            if (hero.state == Constants.HeroState.BEAST)
             {
-                if (time - lastAttackTime > HERO_BEAST_ATTACK_TIME)
+                if (time - hero.lastAttackTime > Constants.HERO_BEAST_ATTACK_TIME)
                 {
                     //lastAttackTime = game.time;  (reminder)
                     hero.isSoundBeastAtttack = true;
@@ -86,43 +157,47 @@ public class Game{
                     hero.currentFrame = 0;
                 }
             }
-            else if (state == NORMAL && inventoryList.get(hero.slotNo).current > 0)
+            else if (hero.state == Constants.HeroState.NORMAL && inventoryList.get(hero.slotNo).current > 0)
             {
-                if (time > shotLastTime + ITEM_REUSE_COOLDOWN[inventoryList.get(hero.slotNo).name])
+                if (time > hero.shotLastTime + Constants.ITEM_REUSE_COOLDOWN[inventoryList.get(hero.slotNo).name.ordinal()])
                 {
-                    shotLastTime = time;
-                    inventoryList[slotNo].current -= 1;
-                    if (inventoryList.get(hero.slotNo).name == PISTOL || inventoryList.get(hero.slotNo).name == RIFLE)
+                    hero.shotLastTime = time;
+                    inventoryList.set(hero.slotNo, inventoryList.get(hero.slotNo)).current -= 1;
+                    if (inventoryList.get(hero.slotNo).name == Constants.NameItem.PISTOL || inventoryList.get(hero.slotNo).name == Constants.NameItem.RIFLE)
                     {
-                        if (Keyboard::isKeyPressed(Keyboard::A)) dirLast = LEFT;
-                        if (Keyboard::isKeyPressed(Keyboard::S)) dirLast = DOWN;
-                        if (Keyboard::isKeyPressed(Keyboard::D)) dirLast = RIGHT;
-                        if (Keyboard::isKeyPressed(Keyboard::W)) dirLast = UP;
+                        if (Gdx.input.isKeyPressed(Input.Keys.A)) hero.dirLast = Constants.Direction.LEFT;
+                        if (Gdx.input.isKeyPressed(Input.Keys.S)) hero.dirLast = Constants.Direction.DOWN;
+                        if (Gdx.input.isKeyPressed(Input.Keys.D)) hero.dirLast = Constants.Direction.RIGHT;
+                        if (Gdx.input.isKeyPressed(Input.Keys.W)) hero.dirLast = Constants.Direction.UP;
                         hero.isSoundShoot = true;
-                        AddNewShot(shotList, dirLast, pos, time, sprite_shot, sprite_grenade, BULLET);
+
+                        AddNewShot(hero.dirLast, sprite_shot, sprite_grenade, Constants.ShotType.BULLET);
                     }
-                    else if (inventoryList.get(hero.slotNo).name == DRINK)
+                    else if (inventoryList.get(hero.slotNo).name == Constants.NameItem.DRINK)
                     {
-                        hero.health += HP_PER_DRINK;
-                        if (health > 100)
+                        hero.health += Constants.HP_PER_DRINK;
+                        if (hero.health > 100)
                         {
-                            health = 100;
+                            hero.health = 100;
                         }
                     }
-                    else if (inventoryList.get(hero.slotNo).name == MIXTURE)
+                    else if (inventoryList.get(hero.slotNo).name == Constants.NameItem.MIXTURE)
                     {
-                        state = TRANSFORMING;
-                        hero.dir = NONE;
-                        hero.dirLast = DOWN;
+                        hero.state = Constants.HeroState.TRANSFORMING;
+                        hero.dir = Constants.Direction.NONE;
+                        hero.dirLast = Constants.Direction.DOWN;
                     }
-                    else if (inventoryList[slotNo].name == GRENADE)
+                    else if (inventoryList.get(hero.slotNo).name == Constants.NameItem.GRENADE)
                     {
-                        AddNewShot(shotList, dirLast, pos, time, sprite_shot, sprite_grenade, USED_GRENADE);
+                        AddNewShot(hero.dirLast, sprite_shot, sprite_grenade, Constants.ShotType.USED_GRENADE);
                     }
                 }
             }
         }
     };
+
+    //TODO: comm
+    /*
 
     void DrawText(SpriteBatch batch, View view, Text text)
     {
@@ -136,16 +211,16 @@ public class Game{
         //std::ostringstream toStringQuantity;
 
 
-        text.setString(to_string(inventoryList.get(hero.slotNo).current) + "/" + to_string(inventoryList.get(hero.slotNo).quantity) + " " + ITEM_NAMES[inventoryList.get(hero.slotNo).name]);
-        .draw(batch)(text);
+        text.setString(to_string(inventoryList.get(hero.slotNo).current) + "/" + to_string(inventoryList.get(hero.slotNo).quantity) + " " + Constants.ITEM_NAMES[inventoryList.get(hero.slotNo).name]);
+        text.draw(batch);
         if (hero.isReloading)
         {
             text.setPosition(posView.x + 40, posView.y + 70);
-            if (inventoryList.get(hero.slotNo).name == PISTOL || inventoryList.get(hero.slotNo).name == RIFLE)
+            if (inventoryList.get(hero.slotNo).name == Constants.NameItem.PISTOL || inventoryList.get(hero.slotNo).name == Constants.NameItem.RIFLE)
             {
                 text.setString("reloading");
             }
-            else if (inventoryList.get(hero.slotNo).name == GRENADE)
+            else if (inventoryList.get(hero.slotNo).name == Constants.NameItem.GRENADE)
             {
                 //text.setString("pulling");
             }
@@ -174,15 +249,15 @@ public class Game{
             text.draw(batch);
         }
     }
-
+*/
     Inventory GetNewInventoryItem(Loot loot, Sprite items)
     {
-        Inventory inventory;
+        Inventory inventory = new Inventory();
         inventory.name = loot.name;
         inventory.quantity = loot.quantity;
         inventory.current = 0;
         inventory.sprite = items;
-        inventory.sprite.setRegion(loot.name.ordinal() * 32, 0, 32, 32));
+        inventory.sprite.setRegion(loot.name.ordinal() * 32, 0, 32, 32);
         return inventory;
     }
 
@@ -190,7 +265,7 @@ public class Game{
     void CheckLoot(Sprite items)
     {
         float x = hero.sprite.getX();
-        float y = hero.sprite.getPosition().y;
+        float y = hero.sprite.getY();
 
         boolean isItemAlreadyIn = false;
 
@@ -199,15 +274,16 @@ public class Game{
             if (lootItem.isDrawn == true)  //if loot.item.center contains heroSprite  -> add new item in inventory
             {
                 Vector2 itemCenter = new Vector2();
-                itemCenter.x = lootItem.pos.x + lootItem.sprite.getGlobalBounds().width / 2;
-                itemCenter.y = lootItem.pos.y + lootItem.sprite.getGlobalBounds().height / 2;
-                if (hero.sprite.getGlobalBounds().contains(itemCenter))
+                itemCenter.x = lootItem.pos.x + lootItem.sprite.getWidth() / 2;
+                itemCenter.y = lootItem.pos.y + lootItem.sprite.getHeight() / 2;
+                if (hero.sprite.getBoundingRectangle().contains(itemCenter))
                 {
                     hero.isSoundLoot = true;
-                    if (lootItem.name != AMMO)  //any item that we can take
+                    if (lootItem.name != Constants.NameItem.AMMO)  //any item that we can take
                     {
                         //check if this item exists in inventory, and if so - upload it
-                        int itemIndex = GetSlotIndexOfItem(lootItem, inventoryList);
+                        //TODO: comm
+                        int itemIndex = 1;//GetSlotIndexOfItem(lootItem, inventoryList);
                         if (itemIndex >= 0)
                         {
                             inventoryList.set(itemIndex, inventoryList.get(itemIndex)).quantity += lootItem.quantity;
@@ -228,13 +304,13 @@ public class Game{
                     {
                         lootItem.isDrawn = false;
                         int nWeaponAmmoAdded = 0;
-                        while (nWeaponAmmoAdded < AMMO_PACKS)
+                        while (nWeaponAmmoAdded < Constants.AMMO_PACKS)
                         {
                             for (Inventory itm : inventoryList)
                             {
-                                if (itm.name != MIXTURE && itm.name != KEY && itm.name != DRINK)
+                                if (itm.name != Constants.NameItem.MIXTURE && itm.name != Constants.NameItem.DRINK)
                                 {
-                                    itm.quantity += Constants.MAX_AMMO[itm.name];
+                                    itm.quantity += Constants.MAX_AMMO[itm.name.ordinal()];
                                     nWeaponAmmoAdded += 1;
                                 }
                             }

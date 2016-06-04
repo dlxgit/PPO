@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Vector;
@@ -21,12 +22,12 @@ public class Loot {
 
     void InitializeLoot(Vector<Loot> lootList, Vector<Object> objects, Sprite sprite)
     {
-        GenerateLoot(lootList, objects, { WIDTH_MAP,HEIGHT_MAP }, 5, DRINK, sprite);
-        GenerateLoot(lootList, objects, { WIDTH_MAP,HEIGHT_MAP }, 3, PISTOL, sprite);
-        GenerateLoot(lootList, objects, { WIDTH_MAP,HEIGHT_MAP }, 2, AMMO, sprite);
-        GenerateLoot(lootList, objects, { WIDTH_MAP,HEIGHT_MAP }, 1, RIFLE, sprite);
-        GenerateLoot(lootList, objects, { WIDTH_MAP,HEIGHT_MAP }, 1, MIXTURE, sprite);
-        GenerateLoot(lootList, objects, { WIDTH_MAP,HEIGHT_MAP }, 2, GRENADE, sprite);
+        GenerateLoot(lootList, objects, new Vector2(Constants.WIDTH_MAP,Constants.HEIGHT_MAP), 5, Constants.NameItem.DRINK, sprite);
+        GenerateLoot(lootList, objects, new Vector2(Constants.WIDTH_MAP,Constants.HEIGHT_MAP), 3, Constants.NameItem.PISTOL, sprite);
+        GenerateLoot(lootList, objects, new Vector2(Constants.WIDTH_MAP,Constants.HEIGHT_MAP), 2, Constants.NameItem.AMMO, sprite);
+        GenerateLoot(lootList, objects, new Vector2(Constants.WIDTH_MAP,Constants.HEIGHT_MAP), 1, Constants.NameItem.RIFLE, sprite);
+        GenerateLoot(lootList, objects, new Vector2(Constants.WIDTH_MAP,Constants.HEIGHT_MAP), 1, Constants.NameItem.MIXTURE, sprite);
+        GenerateLoot(lootList, objects, new Vector2(Constants.WIDTH_MAP,Constants.HEIGHT_MAP), 2, Constants.NameItem.GRENADE, sprite);
     }
 
 
@@ -35,7 +36,7 @@ public class Loot {
         for (Loot item : lootList)
         {
             if (item.isDrawn == true)
-                .draw(batch)(item.sprite);
+                item.sprite.draw(batch);
         }
     };
 
@@ -55,9 +56,10 @@ public class Loot {
 
     Loot GetNewLootItem(Constants.NameItem item, Sprite sprite, float x, float y)
     {
-        Loot loot;
+        Loot loot = new Loot();
         loot.name = item;
-        loot.quantity = GetMaxQuantity(loot.name);
+        //TODO: comm
+        //loot.quantity = GetMaxQuantity(loot.name);
         loot.pos = new Vector2(x,y);
         loot.sprite = sprite;
         loot.sprite.setPosition(loot.pos.x, loot.pos.y);
@@ -72,17 +74,18 @@ public class Loot {
         do
         {
             boolean needNewBlock = false;
-            Vector2 newPos = { (float)((rand() % (int)mapSize.x) * STEP_TILE), (float)((rand() % (int)(mapSize.y)) * STEP_TILE) };
+            Vector2 newPos = new Vector2((float)((int)(Math.random() * (int)mapSize.x) * Constants.STEP_TILE), (float)(((int)(Math.random() * (int)(mapSize.y)) * Constants.STEP_TILE)));
 
-            TextureRegion lootRect = { newPos.x,newPos.y,texture_items.getGlobalBounds().height,texture_items.getGlobalBounds().height };
+            Rectangle lootRect = new Rectangle( newPos.x,newPos.y,texture_items.getWidth(),texture_items.getHeight());
             boolean isIntersected = false;
             for (Object object :objects)
             {
-                if (lootRect.intersects(object.rect))
+                //TODO: comm
+                /*if (lootRect.overlaps(object.rect()))
                 {
                     needNewBlock = true;
                     break;
-                }
+                }*/
             }
             if (needNewBlock)
             {

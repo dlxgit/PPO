@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Andrey on 04.06.2016.
  */
+
+
 public class Hero {
 
     Vector2 pos;
@@ -50,14 +54,14 @@ public class Hero {
         slotNo = 0;
         nSlots = 1;
         health = 100;
-        Texture.loadFromFile("resources/images/png");
-        sprite.setTexture(texture);
+        ;
+        sprite.setTexture(Sprites.texture_hero);
         //sprite.setRegion(4, 4, 32, 32));
-        dir = NONE;
-        dirLast = DOWN;
+        dir = Constants.Direction.NONE;
+        dirLast = Constants.Direction.DOWN;
         currentFrame = 0;
         sprite.setPosition(6 * 32, 12 * 32);  //start position
-        state = NORMAL;
+        state = Constants.HeroState.NORMAL;
         isBeastAttack = false;
         isWeaponSwitch = false;
         lastAttackTime = 0;
@@ -77,29 +81,29 @@ public class Hero {
     void updateDirection()
     {
         //update hero direction
-        if (Keyboard::isKeyPressed(Keyboard::Up))
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
         {
-            if (Keyboard::isKeyPressed(Keyboard::Right))  dir = UPRIGHT;
-            else if (Keyboard::isKeyPressed(Keyboard::Left))  dir = UPLEFT;
-            else dir = UP;
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))  dir = Constants.Direction.UPRIGHT;
+            else if (Gdx.input.isKeyPressed(Input.Keys.LEFT))  dir = Constants.Direction.UPLEFT;
+            else dir = Constants.Direction.UP;
         }
-        else if (Keyboard::isKeyPressed(Keyboard::Down))
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
-            if (Keyboard::isKeyPressed(Keyboard::Left)) dir = DOWNLEFT;
-            else if (Keyboard::isKeyPressed(Keyboard::Right)) dir = DOWNRIGHT;
-            else dir = DOWN;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) dir = Constants.Direction.DOWNLEFT;
+            else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) dir = Constants.Direction.DOWNRIGHT;
+            else dir = Constants.Direction.DOWN;
         }
-        else if (Keyboard::isKeyPressed(Keyboard::Left))
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {
-            if (Keyboard::isKeyPressed(Keyboard::Down)) dir = DOWNLEFT;
-            else dir = LEFT;
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) dir = Constants.Direction.DOWNLEFT;
+            else dir = Constants.Direction.LEFT;
         }
-        else if (Keyboard::isKeyPressed(Keyboard::Right))
+        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
-            if (Keyboard::isKeyPressed(Keyboard::Down)) dir = DOWNRIGHT;
-            else dir = RIGHT;
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) dir = Constants.Direction.DOWNRIGHT;
+            else dir = Constants.Direction.RIGHT;
         }
-        else dir = NONE;
+        else dir = Constants.Direction.NONE;
     };
 
     boolean IsInventorySwitch()
@@ -107,14 +111,14 @@ public class Hero {
         boolean isSwitch = false;
         if (isWeaponSwitch == false)
         {
-            if (Keyboard::isKeyPressed(Keyboard::X))
+            if (Gdx.input.isKeyPressed(Input.Keys.X))
             {
                 isWeaponSwitch = true;
                 slotNo += 1;
                 if (slotNo >= nSlots) slotNo = 0;
                 isSwitch = true;
             }
-            else if (Keyboard::isKeyPressed(Keyboard::Z))
+            else if (Gdx.input.isKeyPressed(Input.Keys.Z))
             {
                 isWeaponSwitch = true;
                 slotNo -= 1;
@@ -122,46 +126,44 @@ public class Hero {
                 isSwitch = true;
             }
         }
-        else if ((Keyboard::isKeyPressed(Keyboard::X) || Keyboard::isKeyPressed(Keyboard::Z)) == false)
+        else if ((Gdx.input.isKeyPressed(Input.Keys.X) || Gdx.input.isKeyPressed(Input.Keys.Z)) == false)
         isWeaponSwitch = false;
         return isSwitch;
     };
 
 
-
-
     void UpdateHeroFrame(float time)
     {
-        if (state == TRANSFORMING)
+        if (state == Constants.HeroState.TRANSFORMING)
         {
-            sprite.setRegion(11 + 37 * (int)currentFrame, 484, 32, 45);
+            sprite.setRegion(11 + 37 * (int) currentFrame, 484, 32, 45);
             currentFrame += 0.05f;
 
             if (currentFrame > 7)
             {
-                state = BEAST;
+                state = Constants.HeroState.BEAST;
                 beastTimer = time;
                 currentFrame = 0;
-                damageResistance = HERO_BEAST_DAMAGE_RESISTANCE;
+                damageResistance = Constants.HERO_BEAST_DAMAGE_RESISTANCE;
             }
         }
-        else if (state == BEAST)
+        else if (state == Constants.HeroState.BEAST)
         {
             if (isBeastAttack)  //attacking beast animation
             {
                 switch (dirLast)
                 {
                     case UP:
-                        sprite.setRegion(355 + 40 * (int)currentFrame, 597, 34, 47);
+                        sprite.setRegion(355 + 40 * (int) currentFrame, 597, 34, 47);
                         break;
                     case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                    sprite.setRegion(182 + 57 * (int)currentFrame, 598, 48, 52);
+                    sprite.setRegion(182 + 57 * (int) currentFrame, 598, 48, 52);
                     break;
                     case DOWN:
-                        sprite.setRegion(42 + 35 * (int)currentFrame, 595, 35, 54);
+                        sprite.setRegion(42 + 35 * (int) currentFrame, 595, 35, 54);
                         break;
                     case DOWNLEFT: case LEFT: case UPLEFT:
-                    sprite.setRegion(492 + 56 * (int)currentFrame, 601, 54, 52);
+                    sprite.setRegion(492 + 56 * (int) currentFrame, 601, 54, 52);
                     break;
                     case NONE:
                         break;
@@ -179,32 +181,32 @@ public class Hero {
                 switch (dir)
                 {
                     case UP:
-                        sprite.setRegion(326 + 40 * (int)currentFrame, 537, 37, 47);
+                        sprite.setRegion(326 + 40 * (int) currentFrame, 537, 37, 47);
                         break;
                     case UPRIGHT: case RIGHT: case DOWNRIGHT:
                     //21 38
-                    sprite.setRegion(163 + 40 * (int)currentFrame, 537, 37, 47);
+                    sprite.setRegion(163 + 40 * (int) currentFrame, 537, 37, 47);
                     break;
                     case DOWN:
-                        sprite.setRegion(9 + 38 * (int)currentFrame, 537, 37, 47);
+                        sprite.setRegion(9 + 38 * (int) currentFrame, 537, 37, 47);
                         break;
                     case DOWNLEFT: case LEFT: case UPLEFT:
-                    sprite.setRegion(480 + 40 * (int)currentFrame, 537, 37, 47);
+                    sprite.setRegion(480 + 40 * (int) currentFrame, 537, 37, 47);
                     break;
                     case NONE:
-                        if (dirLast == UP)
+                        if (dirLast == Constants.Direction.UP)
                         {
                             sprite.setRegion(270 + 76, 485, 36, 46);
                         }
-                        else if (dirLast == RIGHT)
+                        else if (dirLast == Constants.Direction.RIGHT)
                         {
                             sprite.setRegion(270 + 39, 485, 36, 46);
                         }
-                        else if (dirLast == DOWN)
+                        else if (dirLast == Constants.Direction.DOWN)
                         {
                             sprite.setRegion(270, 485, 36, 46);
                         }
-                        else if (dirLast == LEFT)
+                        else if (dirLast == Constants.Direction.LEFT)
                         {
                             sprite.setRegion(270 + 114, 485, 36, 46);
                         }
@@ -219,39 +221,39 @@ public class Hero {
                 }
             }
         }
-        else if (state == NORMAL)  //normal moving animation
+        else if (state == Constants.HeroState.NORMAL)  //normal moving animation
         {
             switch (dir)
             {
                 case UP:
-                    sprite.setRegion(105 + 22 * (int)currentFrame, 84, 21, 37);
+                    sprite.setRegion(105 + 22 * (int) currentFrame, 84, 21, 37);
                     break;
                 case UPRIGHT: case RIGHT: case DOWNRIGHT:
                 //21 38
-                sprite.setRegion(105 + 22 * (int)currentFrame, 44, 21, 37);
+                sprite.setRegion(105 + 22 * (int) currentFrame, 44, 21, 37);
                 break;
                 case DOWN:
-                    sprite.setRegion(105 + 22 * (int)currentFrame, 4, 21, 37);
+                    sprite.setRegion(105 + 22 * (int) currentFrame, 4, 21, 37);
                     break;
                 case DOWNLEFT: case LEFT: case UPLEFT:
-                sprite.setRegion(105 + 22 * (int)currentFrame, 124, 21, 37);
+                sprite.setRegion(105 + 22 * (int) currentFrame, 124, 21, 37);
                 break;
                 case NONE:
-                    if (dirLast == UP)
+                    if (dirLast == Constants.Direction.UP)
                     {
-                        sprite.setRegion(86, 85, 21, 36));
+                        sprite.setRegion(86, 85, 21, 36);
                     }
-                    else if (dirLast == RIGHT)
+                    else if (dirLast == Constants.Direction.RIGHT)
                     {
-                        sprite.setRegion(86, 45, 21, 36));
+                        sprite.setRegion(86, 45, 21, 36);
                     }
-                    else if (dirLast == DOWN)
+                    else if (dirLast == Constants.Direction.DOWN)
                     {
-                        sprite.setRegion(86, 5, 21, 36));
+                        sprite.setRegion(86, 5, 21, 36);
                     }
-                    else if (dirLast == LEFT)
+                    else if (dirLast == Constants.Direction.LEFT)
                     {
-                        sprite.setRegion(86, 125, 21, 36));
+                        sprite.setRegion(86, 125, 21, 36);
                     }
                     break;
             }
@@ -262,29 +264,29 @@ public class Hero {
                 currentFrame = 0;
             }
         }
-        else if (state == DAMAGED)
+        else if (state == Constants.HeroState.DAMAGED)
         {
-            sprite.setRegion(10 + 32 * (int)currentFrame, 179, 32, 45));
+            sprite.setRegion(10 + 32 * (int) currentFrame, 179, 32, 45);
             currentFrame += 0.06f;
             if (currentFrame > 2)
             {
                 currentFrame = 0;
-                state = NORMAL;
+                state = Constants.HeroState.NORMAL;
             }
         }
-        else if (state == SMASHED)
+        else if (state == Constants.HeroState.SMASHED)
         {
             sprite.setRegion(235, 299, 70, 51);
             currentFrame = 0;
-            if (lastSmashTime + HERO_SMASH_DURATION < time)
+            if (lastSmashTime + Constants.HERO_SMASH_DURATION < time)
             {
-                state = NORMAL;
+                state = Constants.HeroState.NORMAL;
                 isSmashed = false;
                 //21.36
                 //sprite.setPosition()
             }
         }
-        if (dir != NONE)
+        if (dir != Constants.Direction.NONE)
         {
             dirLast = dir;  //update dirLast (for shooting)
             if (dir != dirLast)
@@ -295,7 +297,7 @@ public class Hero {
     };
 
     void DrawHero(SpriteBatch batch, Sprite  hero){
-        .draw(batch)(hero);
+        hero.draw(batch);
     };
 
 

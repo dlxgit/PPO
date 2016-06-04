@@ -44,7 +44,7 @@ public class Throwing {
 
     boolean IsMilkOnGround(Throwing throwing)
     {
-        Vector2 throwPos = throwing.sprite.getPosition();
+        Vector2 throwPos = new Vector2(throwing.sprite.getX(), throwing.sprite.getY());
         if (Math.abs(throwPos.x - throwing.endPos.x) < 10 && Math.abs(throwPos.y - throwing.endPos.y) < 10)
         {
             return true;
@@ -54,7 +54,7 @@ public class Throwing {
 
     void UpdateThrowingPosition(Throwing throwing)
     {
-        Vector2 pos = throwing.sprite.getPosition();
+        Vector2 pos = new Vector2(throwing.sprite.getX(), throwing.sprite.getY());
         throwing.sprite.setPosition(pos.x + throwing.stepPerLoop.x, pos.y + throwing.stepPerLoop.y);
     }
 
