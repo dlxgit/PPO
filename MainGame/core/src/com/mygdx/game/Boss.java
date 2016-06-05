@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -55,7 +56,7 @@ public class Boss {
 
 
 
-    void InitializeBoss(Boss boss, Sprites sprites, float time)
+    public void InitializeBoss(Boss boss, Sprites sprites, float time)
     {
         boss.sprite = sprites.boss;
         boss.spawnTime = time;
@@ -94,82 +95,82 @@ public class Boss {
         boss.isCommonZombie = true;
     }
 
-    void UpdateBossFrame(Boss boss)
+    public void UpdateBossFrame()
     {
         //11 383
-        if (boss.eventType == Constants.BossEvent.STOMP_FOR_ZOMBIES)
+        if (eventType == Constants.BossEvent.STOMP_FOR_ZOMBIES)
         {
-            if (boss.currentFrame > 4)
+            if (currentFrame > 4)
             {
-                boss.currentFrame = 0;
+                currentFrame = 0;
             }
-            if (boss.lastSide == Constants.Direction.LEFT)
+            if (lastSide == Constants.Direction.LEFT)
             {
-                boss.sprite.setRegion(11 + 105 * (int)boss.currentFrame, 13, 106, 154);
+                sprite.setRegion(11 + 105 * (int)currentFrame, 13, 106, 154);
             }
             else
             {
-                boss.sprite.setRegion(11 + 105 * (int)boss.currentFrame, 189, 106, 154);
+                sprite.setRegion(11 + 105 * (int)currentFrame, 189, 106, 154);
             }
-            boss.currentFrame += 0.1f;
+            currentFrame += 0.1f;
         }
-        else if (boss.eventType != Constants.BossEvent.SHOOT)
+        else if (eventType != Constants.BossEvent.SHOOT)
         {
-            switch (boss.dir)
+            switch (dir)
             {
                 case UP: case DOWN:
-                if (boss.lastSide == Constants.Direction.LEFT)
+                if (lastSide == Constants.Direction.LEFT)
                 {
-                    boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 13, 106, 154);
+                    sprite.setRegion(11 + 105 * (int) currentFrame, 13, 106, 154);
                 }
                 else
                 {
-                    boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 189, 106, 154);
+                    sprite.setRegion(11 + 105 * (int) currentFrame, 189, 106, 154);
                 }
                 break;
                 case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 189, 106, 154);
+                sprite.setRegion(11 + 105 * (int) currentFrame, 189, 106, 154);
                 break;
                 case DOWNLEFT: case LEFT: case UPLEFT:
-                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 13, 106, 154);
+                sprite.setRegion(11 + 105 * (int) currentFrame, 13, 106, 154);
                 break;
                 default:
                     break;
             }
-            boss.currentFrame += 0.07f;
-            if (boss.eventType == Constants.BossEvent.CHARGE)
+            currentFrame += 0.07f;
+            if (eventType == Constants.BossEvent.CHARGE)
             {
-                boss.currentFrame += 0.2f;
+                currentFrame += 0.2f;
             }
-            if (boss.currentFrame > 4)
+            if (currentFrame > 4)
             {
-                boss.currentFrame = 0;
+                currentFrame = 0;
             }
         }
         else
         {
-            if (boss.lastSide == Constants.Direction.LEFT)
+            if (lastSide == Constants.Direction.LEFT)
             {
-                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 383, 106, 154);
+                sprite.setRegion(11 + 105 * (int) currentFrame, 383, 106, 154);
             }
             else
             {
-                boss.sprite.setRegion(11 + 105 * (int) boss.currentFrame, 572, 106, 154);
+                sprite.setRegion(11 + 105 * (int) currentFrame, 572, 106, 154);
             }
-            if (boss.currentFrame > 2 && boss.isAttack == false)
+            if (currentFrame > 2 && isAttack == false)
             {
-                boss.isAttack = true;
+                isAttack = true;
             }
-            boss.currentFrame += 0.2f;
-            if (boss.currentFrame >= 3)
+            currentFrame += 0.2f;
+            if (currentFrame >= 3)
             {
-                boss.currentFrame = 1;
+                currentFrame = 1;
             }
             //392 404 42 19*throwing.currentFrame
         }
     }
 
-    boolean IsReadyToShoot(Boss boss, float time)
+    public boolean IsReadyToShoot(Boss boss, float time)
     {
         if (boss.eventType == Constants.BossEvent.SHOOT)
         {
@@ -181,7 +182,7 @@ public class Boss {
         return false;
     }
 
-    boolean IsBossNearMapCenter(Sprite boss)
+    public boolean IsBossNearMapCenter(Sprite boss)
     {
         Vector2 pos = new Vector2(Sprites.GetSpriteCenter(boss));
         //cout << "BOSS POS " << pos.x << " " << pos.y << " TO " << LEVEL1_CENTER_POS.x << " " << LEVEL1_CENTER_POS.y << " CHECK " << abs(pos.x - LEVEL1_CENTER_POS.x + 32) << " " << abs(pos.y - LEVEL1_CENTER_POS.y + 32) << endl;
@@ -193,7 +194,9 @@ public class Boss {
         return false;
     }
 
-    void ComputeBossDirection(Boss boss, TextureRegion rect, Sprite hero)
+
+
+    public void ComputeBossDirection(Boss boss, Rectangle rect, Sprite hero)
     {
         Vector2 heroPos = Sprites.GetSpriteCenter(hero);
         //Vector2f bossPos = { rect.left + rect.width / 2.f, rect.top + rect.height / 2.f };
@@ -262,13 +265,13 @@ public class Boss {
         }
     }
 
-    Rectangle GetBossCollisionRect(Sprite sprite)
+    public Rectangle GetBossCollisionRect(Sprite sprite)
     {
         Rectangle bounds = sprite.getBoundingRectangle();
         return new Rectangle(bounds.getX(), bounds.getY() + 50.f, bounds.width, bounds.height - 50.f);
     }
 
-    boolean IsReachedHero(Sprite hero, Sprite boss)
+    public boolean IsReachedHero(Sprite hero, Sprite boss)
     {
         Vector2 heroPos = Sprites.GetSpriteCenter(hero);
         Vector2 bossPos = Sprites.GetSpriteCenter(boss);
@@ -281,14 +284,14 @@ public class Boss {
         return false;
     }
 
-    boolean IsFootRectIntersectWithHero(Sprite hero, Rectangle boss)
+    public boolean IsFootRectIntersectWithHero(Sprite hero, Rectangle boss)
     {
         if (hero.getBoundingRectangle().overlaps(boss))
             return true;
         return false;
     }
 
-    boolean IsBossAbleToShoot(Sprite hero, Sprite boss)
+    public boolean IsBossAbleToShoot(Sprite hero, Sprite boss)
     {
         Vector2 heroPos = Sprites.GetSpriteCenter(hero);
         Vector2 bossPos = Sprites.GetSpriteCenter(boss);
@@ -303,7 +306,7 @@ public class Boss {
 
     }
 
-    void UpdateBossMoveSpeed(Boss boss)
+    public void UpdateBossMoveSpeed(Boss boss)
     {
         if (boss.state == Constants.BossState.MOVING)
         {
@@ -315,36 +318,20 @@ public class Boss {
 	if (enemyList.size() > 0: boss.eventType = MOVE_TO
 */
 
-    void CheckBossExplosion(Boss boss, Vector<Explosion> explosionList, int level)
+    public void CheckBossExplosion(Vector<Explosion> explosionList, int level)
     {
         if (level == 1)
         {
-            Vector2 bossPos = Sprites.GetSpriteCenter(boss.sprite);
+            Vector2 bossPos = Sprites.GetSpriteCenter(sprite);
 
             for (Explosion explosion : explosionList)
             {
                 if (explosion.currentFrame > 12)
                 {
                     if (Math.abs(bossPos.x - (explosion.pos.x + 120)) < 120 && (Math.abs(bossPos.y - (explosion.pos.y + 70)) < 120))
-                        boss.health -= Constants.DMG_ITEM[6];
+                        health -= Constants.DMG_ITEM[6];
                 }
             }
         }
-    }
-
-    void DrawBossBar(SpriteBatch batch, Boss boss, Vector2 viewPos)
-    {
-        if (boss.health > 0)
-        {
-            boss.indicator.setRegion(0, 0, 246 * (int) ((float) (boss.health) / (float) Constants.BOSS_MAX_HEALTH), 8);
-        }
-        boss.bar.setPosition(Constants.BOSS_BAR_POSITION.x + viewPos.x - Constants.WINDOW_SIZE.x / 2.f, Constants.BOSS_BAR_POSITION.y + viewPos.y - Constants.WINDOW_SIZE.y / 2.f);
-        boss.indicator.setPosition(Constants.BOSS_INDICATOR_POSITION.x + viewPos.x - Constants.WINDOW_SIZE.x / 2.f, Constants.BOSS_INDICATOR_POSITION.y + viewPos.y - Constants.WINDOW_SIZE.y / 2.f);
-        boss.bar.draw(batch);
-        boss.indicator.draw(batch);
-    }
-
-    void DrawBoss(SpriteBatch batch, Sprite boss) {
-        boss.draw(batch);
     }
 }

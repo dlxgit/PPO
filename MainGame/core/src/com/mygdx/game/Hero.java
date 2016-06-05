@@ -49,36 +49,7 @@ public class Hero {
     boolean isSoundNpcDeath;
 
 
-    void create()
-    {
-        slotNo = 0;
-        nSlots = 1;
-        health = 100;
-        ;
-        sprite.setTexture(Sprites.texture_hero);
-        //sprite.setRegion(4, 4, 32, 32));
-        dir = Constants.Direction.NONE;
-        dirLast = Constants.Direction.DOWN;
-        currentFrame = 0;
-        sprite.setPosition(6 * 32, 12 * 32);  //start position
-        state = Constants.HeroState.NORMAL;
-        isBeastAttack = false;
-        isWeaponSwitch = false;
-        lastAttackTime = 0;
-        lastReloadTime = 0;
-        savedNeighbors = 0;
-        damageResistance = 1;
-        isSmashed = false;
-
-        isSoundBeastAtttack = false;
-        isSoundLoot = false;
-        isSoundNpcSurvive = false;
-        isSoundShoot = false;
-        isSoundTakeDamage = false;
-        isSoundEnemyExplosion = false;
-    };
-
-    void updateDirection()
+    public void UpdateDirection()
     {
         //update hero direction
         if (Gdx.input.isKeyPressed(Input.Keys.UP))
@@ -106,7 +77,7 @@ public class Hero {
         else dir = Constants.Direction.NONE;
     };
 
-    boolean IsInventorySwitch()
+    public boolean IsInventorySwitch()
     {
         boolean isSwitch = false;
         if (isWeaponSwitch == false)
@@ -132,7 +103,7 @@ public class Hero {
     };
 
 
-    void UpdateHeroFrame(float time)
+    public void UpdateHeroFrame(float time)
     {
         if (state == Constants.HeroState.TRANSFORMING)
         {
@@ -296,9 +267,6 @@ public class Hero {
         }
     };
 
-    void DrawHero(SpriteBatch batch, Sprite  hero){
-        hero.draw(batch);
-    };
 
 
 

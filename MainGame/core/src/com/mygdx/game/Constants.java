@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Andrey on 04.06.2016.
  */
 public final class Constants {
-    public static enum Direction
+    public enum Direction
     {
         NONE,
         UP,
@@ -20,7 +20,7 @@ public final class Constants {
         FOLLOW
     };
 
-    public static enum EnemyType
+    public enum EnemyType
     {
         COMMON,
         AXE,
@@ -28,7 +28,7 @@ public final class Constants {
         FIRE,
     };
 
-    public static enum BossState
+    public enum BossState
     {
         SPAWNING,
         MOVING,
@@ -38,7 +38,7 @@ public final class Constants {
         DYING
     };
 
-    public static enum BossEvent
+    public enum BossEvent
     {
         MOVE_OUT,
         MOVE_TO,
@@ -47,7 +47,7 @@ public final class Constants {
         STOMP_FOR_ZOMBIES,
     };
 
-    public static enum EnemyState
+    public enum EnemyState
     {
         NOTSPAWNED,  //cant move (raising from the ground)
         ACTIVE,
@@ -55,7 +55,7 @@ public final class Constants {
         EXPLODED  //if animation has finished (for deleting from list)
     };
 
-    public static enum HeroState
+    public enum HeroState
     {
         DAMAGED,
         SMASHED,
@@ -64,13 +64,13 @@ public final class Constants {
         BEAST
     };
 
-    public static enum ShotType
+    public enum ShotType
     {
         BULLET,
         USED_GRENADE
     };
 
-    public static enum GameState
+    public  enum GameState
     {
         START_GAME,
         PLAY,
@@ -80,7 +80,7 @@ public final class Constants {
         FINISH,
     };
 
-    public static enum NameItem
+    public  enum NameItem
     {
         DRINK,
         PISTOL,
@@ -92,7 +92,7 @@ public final class Constants {
         SODA
     };
 
-    public static enum NpcType
+    public  enum NpcType
     {
         PHOTOGRAPHS,
         BABY,
@@ -104,7 +104,7 @@ public final class Constants {
         COOK,
     };
 
-    public static enum NpcState
+    public  enum NpcState
     {
         LIVING,
         KILLED,

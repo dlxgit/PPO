@@ -19,8 +19,5 @@ public class Shot {
     float startTime;
     float currentFrame;
 
-    void DeleteShots(Vector<Shot> shots)
-    {
-        shots.clear();
-    }
+
 }

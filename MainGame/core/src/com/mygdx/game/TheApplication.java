@@ -25,8 +25,7 @@ public class TheApplication extends ApplicationAdapter{
 	public static final float PPM = 100;
 	SpriteBatch batch;
 	Texture img;
-	OrthographicCamera camera;
-	Viewport viewport;
+
 	Game game;
 
 
@@ -34,24 +33,42 @@ public class TheApplication extends ApplicationAdapter{
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		camera = new OrthographicCamera();
-		viewport = new FitViewport(800 / PPM, 480 / PPM, camera);
 		game = new Game();
+
+		game.create();
+		System.out.print("ASD");
+		System.out.println("Create_SUCCESS");
 
 	}
 
 	@Override
 	public void render () {
+		System.out.println("CAM_POS");
+		System.out.print(game.camera.position.x);
+		System.out.print(game.camera.position.y);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		batch.begin();
+		game.camera.update();
+		int [] nLayer = {0};
+		//game.renderer.render(nLayer);
+		//game.DrawLoot(batch, game.lootList);
+		game.UpdateGame(batch);
+		System.out.println("STATE " + game.state);
+		System.out.println(game.viewPort.getScreenX());
+		System.out.println(game.npcList.get(0).sprite.getX());
+		game.Draw(batch);
+		//game.DrawMiniMap(game.window, game.miniMap);
+
 		//.draw(batch)(img, 0, 0);
 
 		batch.end();
+		System.out.println("LOOP_END");
 	}
 
 	public void resize(int width, int height){
 		super.resize(width, height);
-		viewport.update(width, height);
+		game.viewPort.update(width, height);
 	}
 }

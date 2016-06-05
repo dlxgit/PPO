@@ -42,122 +42,15 @@ public class Enemy {
 
 
 
-    void ComputeThrownItemPosition(Sprite sprite, Constants.Direction dir, float time, boolean isHero)
+    public void ComputeThrownItemPosition(Sprite sprite, Constants.Direction dir, float time, boolean isHero)
     {
         Vector2 startPos = new Vector2(sprite.getX(), sprite.getY());
     }
 
-    Throwing CreateThrowing(Sprite object, Sprite target, String type,Sprite throwingSprite, float time)
-    {
-        Throwing throwing = new Throwing();
-
-        Vector2 distance = Sprites.ComputeDistanceBetweenSprites(object, target);
-
-        if (type == "axe")
-        {
-            throwing.maxTime = Constants.ENEMY_AXE_THROWING_MAX_TIME;
-            throwing.cooldown = Constants.ENEMY_AXE_ACTION_COOLDOWN;
-        }
-        else if (type == "grenade")
-        {
-
-        }
-        else if (type == "soda")
-        {
-
-        }
-        else if (type == "milk")
-        {
-            throwing.maxTime = 3.f;
-            throwing.cooldown = Constants.BOSS_SHOT_COOLDOWN;
-        }
-
-        throwing.name = type;
-
-        float dist = (float)Math.sqrt(Math.pow(distance.x, 2) + Math.pow(distance.y, 2));
-
-        if (distance.x >= distance.y)
-        {
-            throwing.stepPerLoop = new Vector2( 1, distance.y / distance.x);
-            //coeff = sqrt(pow(dist, 2) - pow(distance.y, 2));
-        }
-        else
-        {
-            throwing.stepPerLoop = new Vector2(distance.x / distance.y, 1);
-            //coeff = sqrt(pow(dist, 2) - pow(distance.x, 2));
-        }
-
-        throwing.stepPerLoop = new Vector2( throwing.stepPerLoop.x * Constants.ENEMY_AXE_THROWING_STEP_PER_LOOP, throwing.stepPerLoop.y * Constants.ENEMY_AXE_THROWING_STEP_PER_LOOP );
-
-        if (object.getX() > target.getX())
-        {
-            throwing.stepPerLoop.x = -throwing.stepPerLoop.x;
-        }
-        if (object.getY() > target.getY())
-        {
-            throwing.stepPerLoop.y = -throwing.stepPerLoop.y;
-        }
-
-        //throwing.dir = dir;
-        throwing.sprite = throwingSprite;
-
-        throwing.startPos = new Vector2(object.getX(), object.getY());
-
-        throwing.sprite.setPosition(throwing.startPos.x, throwing.startPos.y);
-        throwing.startTime = time;
-        throwing.currentFrame = 0;
-        return throwing;
-    }
-
-    void SpawnEnemy(Vector<Enemy> zombieList, float time, int posX, int posY, Sprites sprites, final Constants.EnemyType type)
-    {
-        Enemy enemy = new Enemy();
-
-        enemy.pos.x = posX;
-        enemy.pos.y = posY;
-
-        enemy.health = Constants.ZOMBIE_MAX_HP;
-
-        //enemy.texture = texture_zombie;
-        enemy.type = type;
 
 
-        enemy.currentFrame = 0;
-        enemy.attack_time = 0;
-        enemy.dir = Constants.Direction.NONE;
-        enemy.dirLast = Constants.Direction.NONE;
-        enemy.follow = false;
-        enemy.isNear = false;
 
-        if (enemy.type == Constants.EnemyType.COMMON)
-        {
-            enemy.state = Constants.EnemyState.NOTSPAWNED;
-            enemy.sprite = sprites.zombie;
-            enemy.sprite.setRegion(5, 5, 30, 30);
-            enemy.spawnDelay = 0;
-
-        }
-        else if (enemy.type == Constants.EnemyType.AXE)
-        {
-            enemy.state = Constants.EnemyState.NOTSPAWNED;
-            enemy.sprite = sprites.axe_enemy;
-            enemy.sprite.setRegion(29, 42, 22, 31);
-            enemy.spawnDelay = Constants.ENEMY_AXE_SPAWN_DELAY;
-            enemy.attackCooldown = Constants.ENEMY_AXE_ATTACK_COOLDOWN;
-        }
-
-        enemy.spawnTime = time;
-        enemy.dirChangeTime = 0;
-
-        enemy.isAttack = false;
-        enemy.isAction = false;
-        enemy.last_action_time = 0;
-
-        enemy.sprite.setPosition((float)posX, (float)posY);
-        zombieList.add(enemy);
-    };
-
-    void CheckNpcDeath(Vector<Npc> npcList, Enemy enemy)
+    public void CheckNpcDeath(Vector<Npc> npcList, Enemy enemy)
     {
         Vector2 zombieCenter = Sprites.GetSpriteCenter(enemy.sprite);
 
@@ -175,7 +68,7 @@ public class Enemy {
         }
     };
 
-    Constants.Direction ComputeRandDir(Enemy enemy)
+    public Constants.Direction ComputeRandDir(Enemy enemy)
     {
         Constants.Direction dir = enemy.dir;
 
@@ -197,7 +90,7 @@ public class Enemy {
         return dir;
     };
 
-    void CheckEnemyDir(Enemy enemy, float time)
+    public void CheckEnemyDir(Enemy enemy, float time)
     {
         if (enemy.follow == false)
         {
@@ -214,7 +107,7 @@ public class Enemy {
         }
     };
 
-    void CheckEnemyFollow(Enemy enemy, Hero hero)
+    public void CheckEnemyFollow(Enemy enemy, Hero hero)
     {
         if (Math.abs(enemy.pos.x - hero.pos.x) > Constants.ZOMBIE_VISION_DISTANCE || Math.abs(enemy.pos.y - hero.pos.y) > Constants.ZOMBIE_VISION_DISTANCE)
         {
@@ -230,7 +123,7 @@ public class Enemy {
     };
 
     //should i store it in zombieList>? if i can just keep it here (return true)
-    boolean IsEnemyNearHero(Hero hero, Enemy enemy)
+    public boolean IsEnemyNearHero(Hero hero, Enemy enemy)
     {
         //comparing distance between two nearest points of hero and zombie sprites    to define is zombie near or not
         //TODO: ref
@@ -279,7 +172,7 @@ public class Enemy {
         return false;
     };
 
-    void UpdateEnemyAttack(Hero hero, Enemy enemy, final float time)
+    public void UpdateEnemyAttack(Hero hero, Enemy enemy, final float time)
     {
         //add correct xyHero xyZombie for detecting meleeAttack
         //TODO: change mechanics of zombie attack(depends on side from which it attacks), same for beast attack
@@ -302,7 +195,7 @@ public class Enemy {
         }
     };
 
-    boolean IsIntersectWithOtherEnemy(Vector<Enemy> zombieList, int index)
+    public boolean IsIntersectWithOtherEnemy(Vector<Enemy> zombieList, int index)
     {
         int i = 0;
         for (Enemy enemy : zombieList)
@@ -320,7 +213,7 @@ public class Enemy {
         return false;
     }
 
-    boolean IsIntersectWithHero(Sprite enemy, Sprite hero)
+    public boolean IsIntersectWithHero(Sprite enemy, Sprite hero)
     {
         if (enemy.getBoundingRectangle().overlaps(hero.getBoundingRectangle()))
             return true;
@@ -328,97 +221,97 @@ public class Enemy {
     }
 
 
-    void UpdateEnemyFrame(Enemy enemy, float time)
+    public void UpdateEnemyFrame(float time)
     {
-        if (enemy.type == Constants.EnemyType.COMMON)
+        if (type == Constants.EnemyType.COMMON)
         {
-            if (enemy.state == Constants.EnemyState.DEAD)  //if zombie is exploding
+            if (state == Constants.EnemyState.DEAD)  //if zombie is exploding
             {
-                enemy.sprite.setRegion(5 + 40 * (int)enemy.currentFrame, 344, 34, 48);
-                enemy.currentFrame += 0.05f;
-                if (enemy.currentFrame > 9)
+                sprite.setRegion(5 + 40 * (int)currentFrame, 344, 34, 48);
+                currentFrame += 0.05f;
+                if (currentFrame > 9)
                 {
-                    enemy.state = Constants.EnemyState.EXPLODED;
+                    state = Constants.EnemyState.EXPLODED;
                 }
             }
-            if (enemy.state == Constants.EnemyState.NOTSPAWNED)  //if zombie is not spawned yet
+            if (state == Constants.EnemyState.NOTSPAWNED)  //if zombie is not spawned yet
             {
-                enemy.sprite.setRegion(15 + 50 * (int)enemy.currentFrame, 12, 33, 51);
+                sprite.setRegion(15 + 50 * (int)currentFrame, 12, 33, 51);
 
-                if (enemy.currentFrame > 5)
+                if (currentFrame > 5)
                 {
-                    enemy.state = Constants.EnemyState.ACTIVE;
-                    enemy.currentFrame = 0;
+                    state = Constants.EnemyState.ACTIVE;
+                    currentFrame = 0;
                 }
-                enemy.currentFrame += 0.04f;
+                currentFrame += 0.04f;
             }
-            else if (enemy.state == Constants.EnemyState.ACTIVE)
+            else if (state == Constants.EnemyState.ACTIVE)
             {
-                if (enemy.health < 1)
+                if (health < 1)
                 {
-                    enemy.state = Constants.EnemyState.DEAD;
+                    state = Constants.EnemyState.DEAD;
                 }
                 else
                 {
                     //sprite change for active moving zombies
-                    switch (enemy.dir)
+                    switch (dir)
                     {
                         case UP:
-                            enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84 + 59 + 59, 27, 49);
-                            if (enemy.currentFrame > 4)
+                            sprite.setRegion(15 + 36 * (int)currentFrame, 84 + 59 + 59, 27, 49);
+                            if (currentFrame > 4)
                             {
-                                enemy.currentFrame = 0;
+                                currentFrame = 0;
                             }
                             break;
                         case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                        enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84 + 59 * 3, 27, 49);
-                        if (enemy.currentFrame > 2)
+                        sprite.setRegion(15 + 36 * (int)currentFrame, 84 + 59 * 3, 27, 49);
+                        if (currentFrame > 2)
                         {
-                            enemy.currentFrame = 0;
+                            currentFrame = 0;
                         }
                         break;
                         case DOWN:
-                            enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84, 27, 49);
-                            if (enemy.currentFrame > 2)
+                            sprite.setRegion(15 + 36 * (int)currentFrame, 84, 27, 49);
+                            if (currentFrame > 2)
                             {
-                                enemy.currentFrame = 0;
+                                currentFrame = 0;
                             }
                             break;
                         case DOWNLEFT: case LEFT: case UPLEFT:
-                        enemy.sprite.setRegion(15 + 36 * (int)enemy.currentFrame, 84 + 59, 27, 49);
-                        if (enemy.currentFrame > 2)
+                        sprite.setRegion(15 + 36 * (int)currentFrame, 84 + 59, 27, 49);
+                        if (currentFrame > 2)
                         {
-                            enemy.currentFrame = 0;
+                            currentFrame = 0;
                         }
                         break;
                         case NONE:
                             //no need??
-                            enemy.sprite.setRegion(190, 84, 27, 48);
-                            if (enemy.currentFrame > 4)
+                            sprite.setRegion(190, 84, 27, 48);
+                            if (currentFrame > 4)
                             {
-                                enemy.currentFrame = 0;
+                                currentFrame = 0;
                             }
                             break;
                     }
                 }
             }
-            enemy.currentFrame += 0.05f;
+            currentFrame += 0.05f;
         }
 
 
-        else if (enemy.type == Constants.EnemyType.AXE)
+        else if (type == Constants.EnemyType.AXE)
         {
-            if (enemy.isAttack)
+            if (isAttack)
             {
-                ComputeEnemyAttackFrame(enemy);
+                ComputeEnemyAttackFrame();
             }
             else
             {
-                if (enemy.state == Constants.EnemyState.ACTIVE)
+                if (state == Constants.EnemyState.ACTIVE)
                 {
-                    if (enemy.health < 1)
+                    if (health < 1)
                     {
-                        enemy.state = Constants.EnemyState.DEAD;
+                        state = Constants.EnemyState.DEAD;
                     }
                     else
                     {
@@ -440,121 +333,113 @@ public class Enemy {
 					*/
 
 
-                        switch (enemy.dir)
+                        switch (dir)
                         {
                             case UP:
-                                enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 7, 21, 31);
-                                if (enemy.currentFrame > 4)
+                                sprite.setRegion(10 + 22 * (int)currentFrame, 7, 21, 31);
+                                if (currentFrame > 4)
                                 {
-                                    enemy.currentFrame = 0;
+                                    currentFrame = 0;
                                 }
                                 break;
                             case UPRIGHT: case RIGHT: case DOWNRIGHT:
-                            enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 118, 21, 31);
-                            if (enemy.currentFrame > 2)
+                            sprite.setRegion(10 + 22 * (int)currentFrame, 118, 21, 31);
+                            if (currentFrame > 2)
                             {
-                                enemy.currentFrame = 0;
+                                currentFrame = 0;
                             }
                             break;
                             case DOWN:
-                                enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 43, 21, 31);
-                                if (enemy.currentFrame > 2)
+                                sprite.setRegion(10 + 22 * (int)currentFrame, 43, 21, 31);
+                                if (currentFrame > 2)
                                 {
-                                    enemy.currentFrame = 0;
+                                    currentFrame = 0;
                                 }
                                 break;
                             case DOWNLEFT: case LEFT: case UPLEFT:
-                            enemy.sprite.setRegion(10 + 22 * (int)enemy.currentFrame, 80, 21, 31);
-                            if (enemy.currentFrame > 2)
+                            sprite.setRegion(10 + 22 * (int)currentFrame, 80, 21, 31);
+                            if (currentFrame > 2)
                             {
-                                enemy.currentFrame = 0;
+                                currentFrame = 0;
                             }
                             break;
                             case NONE:
                                 //no need??
-                                enemy.sprite.setRegion(190, 84, 27, 48);
-                                if (enemy.currentFrame > 4)
+                                sprite.setRegion(190, 84, 27, 48);
+                                if (currentFrame > 4)
                                 {
-                                    enemy.currentFrame = 0;
+                                    currentFrame = 0;
                                 }
                                 break;
                         }
                     }
                 }
-                else if (enemy.state == Constants.EnemyState.DEAD)
+                else if (state == Constants.EnemyState.DEAD)
                 {
-                    enemy.sprite.setRegion(5 + 29 * (int)enemy.currentFrame,232, 30, 38);
-                    enemy.currentFrame += 0.03f;
-                    if (enemy.currentFrame > 9)
+                    sprite.setRegion(5 + 29 * (int)currentFrame,232, 30, 38);
+                    currentFrame += 0.03f;
+                    if (currentFrame > 9)
                     {
-                        enemy.state = Constants.EnemyState.EXPLODED;
+                        state = Constants.EnemyState.EXPLODED;
                     }
                 }
-                else if (enemy.state == Constants.EnemyState.NOTSPAWNED)
+                else if (state == Constants.EnemyState.NOTSPAWNED)
                 {
-                    //cout << "TIMES " << time << " " << enemy.spawnTime << " " << enemy.spawnDelay << " " << endl;
-                    if (enemy.spawnTime + enemy.spawnDelay > time)
+                    //cout << "TIMES " << time << " " << spawnTime << " " << spawnDelay << " " << endl;
+                    if (spawnTime + spawnDelay > time)
                     {
-                        enemy.state = Constants.EnemyState.ACTIVE;
+                        state = Constants.EnemyState.ACTIVE;
                     }
                 }
-                enemy.currentFrame += 0.05f;
+                currentFrame += 0.05f;
             }
         }
     };
 
-    void ComputeEnemyAttackFrame(Enemy  enemy)
+    public void ComputeEnemyAttackFrame()
     {
-        switch (enemy.dirLast)
+        switch (dirLast)
         {
             case UP:
-                enemy.sprite.setRegion(34, 174, 28, 27);
-                if (enemy.currentFrame > 4)
+                sprite.setRegion(34, 174, 28, 27);
+                if (currentFrame > 4)
                 {
-                    enemy.currentFrame = 0;
+                    currentFrame = 0;
                 }
                 break;
             case UPRIGHT: case RIGHT: case DOWNRIGHT:
-            enemy.sprite.setRegion(62, 173, 28, 27);
-            if (enemy.currentFrame > 2)
+            sprite.setRegion(62, 173, 28, 27);
+            if (currentFrame > 2)
             {
-                enemy.currentFrame = 0;
+                currentFrame = 0;
             }
             break;
             case DOWN:
-                enemy.sprite.setRegion(89, 173, 28, 27);
-                if (enemy.currentFrame > 2)
+                sprite.setRegion(89, 173, 28, 27);
+                if (currentFrame > 2)
                 {
-                    enemy.currentFrame = 0;
+                    currentFrame = 0;
                 }
                 break;
             case DOWNLEFT: case LEFT: case UPLEFT:
-            enemy.sprite.setRegion(5, 173, 28, 27);
-            if (enemy.currentFrame > 2)
+            sprite.setRegion(5, 173, 28, 27);
+            if (currentFrame > 2)
             {
-                enemy.currentFrame = 0;
+                currentFrame = 0;
             }
             break;
             default:
                 break;
         }
-        enemy.currentFrame += 0.05f;
+        currentFrame += 0.05f;
 
-        if (enemy.currentFrame > 2)
+        if (currentFrame > 2)
         {
-            enemy.isAttack = false;
+            isAttack = false;
         }
     }
 
-    void ResetEnemySpawnTime(Vector<Enemy> zombieList, float  time)
-    {
-        for (Enemy enemy : zombieList)
-        {
-            enemy.spawnTime = time;
-        }
-    }
-
-    void EnemyMoveRandom(Vector<Enemy> zombieList)  //not using
+    public void EnemyMoveRandom(Vector<Enemy> zombieList)  //not using
     {
         for (Enemy zombie : zombieList)
         {
@@ -582,7 +467,7 @@ public class Enemy {
     };
 
 
-    void ComputeEnemyDirection(Enemy enemy, Vector2 heroPos)
+    public void ComputeEnemyDirection(Enemy enemy, Vector2 heroPos)
     {
         //compute distance and dir
         Vector2 distance = new Vector2( Math.abs(heroPos.x - enemy.pos.x), Math.abs(heroPos.y - enemy.pos.y));
@@ -617,63 +502,8 @@ public class Enemy {
         }
     }
 
-    void SpawnEnemyRandomly(Vector<Enemy> zombieList, Vector<Object> objects, int zombiesRemaining, float time, Sprites sprites)
-    {
-        //TODO: MAKE FUNCTION MORE READABLE
-        do
-        {
-            boolean needNewBlock = false;
 
-            Vector2 newPos = new Vector2((float)((int)(Math.random() * Constants.WIDTH_MAP) * Constants.STEP), (float)(((int)(Math.random() * Constants.HEIGHT_MAP) * Constants.STEP)));
-
-            Rectangle lootRect = new Rectangle(newPos.x,newPos.y, Constants.ZOMBIE_SPAWN_RADIUS_COLLISION, Constants.ZOMBIE_SPAWN_RADIUS_COLLISION);
-            //TODO: comm
-            /*
-            for (int i = 0; i < objects.size(); ++i)
-            {
-                if (lootRect.overlaps(objects.get(i).rect())
-                {
-                    needNewBlock = true;
-                    break;
-                }
-            }
-            */
-            if (!needNewBlock)
-            {
-                for (Enemy enemy : zombieList)
-                if ((Math.abs(enemy.pos.x - newPos.x) < 100 && Math.abs(enemy.pos.y - newPos.y) < 100))
-                {
-                    needNewBlock = true;
-                    break;
-                }
-                if (needNewBlock == false)
-                {
-                    //sprites.enemy.setPosition(newPos);
-                    //ZombieSpawn(zombieList, time, newPos.x,newPos.y, sprite_zombie, COMMON);
-                    if (time < 10)
-                    {
-                        SpawnEnemy(zombieList, time, (int)newPos.x, (int)newPos.y, sprites, Constants.EnemyType.COMMON);
-                    }
-                    else
-                    {
-                        Constants.EnemyType type = Constants.EnemyType.COMMON;
-                        if (!zombieList.isEmpty())
-                        {
-                            if (zombieList.get(zombieList.size() - 1).type == Constants.EnemyType.AXE)
-                                type = Constants.EnemyType.COMMON;
-                            else type = Constants.EnemyType.AXE;
-                        }
-                        SpawnEnemy(zombieList, time, (int)newPos.x, (int)newPos.y, sprites, type);
-                    }
-                    //zombieList[zombieList.size() - 1].sprite = sprites.zombie;
-
-                    zombiesRemaining -= 1;
-                }
-            }
-        } while (zombiesRemaining > 0);
-    }
-
-    void CheckEnemyDir(float time, Enemy enemy)
+    public void CheckEnemyDir(float time, Enemy enemy)
     {
         if (enemy.follow == false)
         {
@@ -690,32 +520,7 @@ public class Enemy {
         }
     };
 
-    void CheckEnemyExplosion(Vector<Explosion> explosionList, Vector<Enemy> zombieList)
-    {
-        for (Explosion explosion :explosionList)
-        {
-            if (explosion.currentFrame > 12)
-            {
-                for (Enemy zombie : zombieList)
-                {
-                    if (Math.abs(zombie.pos.x - (explosion.pos.x + 120)) < 120 && (Math.abs(zombie.pos.y - (explosion.pos.y + 70)) < 120))
-                    {
-                        zombie.health = 0;
-                    }
-                }
-                explosionList.remove(explosion);
 
-            }
-        }
-    }
-
-    void DrawEnemies(SpriteBatch batch, Vector<Enemy> zombieList)
-    {
-        for (Enemy  enemy : zombieList)
-        {
-            enemy.sprite.draw(batch);
-        }
-    };
 
     void DeleteEnemyList(Vector<Enemy> zombies)
     {

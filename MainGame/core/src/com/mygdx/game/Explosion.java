@@ -13,7 +13,7 @@ public class Explosion {
     float currentFrame;
     Sprite sprite;
 
-    void DeleteExplosionList(Vector<Explosion> explosions)
+    public void DeleteExplosionList(Vector<Explosion> explosions)
     {
         explosions.clear();
     }

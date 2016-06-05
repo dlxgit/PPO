@@ -29,44 +29,32 @@ public class Throwing {
 
 
 
-    void UpdateThrowingFrame(Throwing throwing)
+    public void UpdateThrowingFrame()
     {
-        if (throwing.name != "milk")
+        if (name != "milk")
         {
-            throwing.sprite.setRegion(0 + 15 * (int) throwing.currentFrame, 0, 16, 16);
-            throwing.currentFrame += 0.6f;
-            if (throwing.currentFrame > 4)
+            sprite.setRegion(0 + 15 * (int)currentFrame, 0, 16, 16);
+            currentFrame += 0.6f;
+            if (currentFrame > 4)
             {
-                throwing.currentFrame = 0;
+                currentFrame = 0;
             }
         }
     }
 
-    boolean IsMilkOnGround(Throwing throwing)
+    public boolean IsMilkOnGround()
     {
-        Vector2 throwPos = new Vector2(throwing.sprite.getX(), throwing.sprite.getY());
-        if (Math.abs(throwPos.x - throwing.endPos.x) < 10 && Math.abs(throwPos.y - throwing.endPos.y) < 10)
+        Vector2 throwPos = new Vector2(sprite.getX(), sprite.getY());
+        if (Math.abs(throwPos.x - endPos.x) < 10 && Math.abs(throwPos.y - endPos.y) < 10)
         {
             return true;
         }
         return false;
     }
 
-    void UpdateThrowingPosition(Throwing throwing)
+    public void UpdateThrowingPosition()
     {
-        Vector2 pos = new Vector2(throwing.sprite.getX(), throwing.sprite.getY());
-        throwing.sprite.setPosition(pos.x + throwing.stepPerLoop.x, pos.y + throwing.stepPerLoop.y);
-    }
-
-    void DrawThrowings(SpriteBatch batch, Vector<Throwing> throwingList)
-    {
-        for (Throwing throwing : throwingList)
-        {
-            sprite.draw(batch);
-        }
-    }
-
-    void DeleteThrowings(Vector<Throwing> throwingList) {
-        throwingList.clear();
+        Vector2 pos = new Vector2(sprite.getX(), sprite.getY());
+        sprite.setPosition(pos.x + stepPerLoop.x, pos.y + stepPerLoop.y);
     }
 }

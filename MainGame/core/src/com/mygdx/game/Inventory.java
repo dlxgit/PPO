@@ -47,17 +47,6 @@ public class Inventory {
         return 0;
     }
 
-    void InitializeInventory(Vector<Inventory> inventoryList, Sprites gameSprites)
-    {
-        Inventory inventory = new Inventory();
-
-        inventory.name = Constants.NameItem.PISTOL;
-        inventory.current = 0;
-        inventory.quantity = 7;
-        inventory.sprite = gameSprites.items;
-        inventory.sprite.setRegion(32, 0, 32, 32);
-        inventoryList.add(inventory);
-    }
 
     void DeleteInventory(Vector<Inventory> inventory)
     {
